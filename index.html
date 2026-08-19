@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Radio Me ♪ ♫ - Modern Malayalam Radio</title>
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,500;14..32,600;14..32,700&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Chilanka&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+    <!-- ===== HEADER ===== -->
+    <header class="site-header">
+        <div class="container header-inner">
+            <!-- Logo as image -->
+            <div class="site-title">
+                <img src="https://blogger.googleusercontent.com/img/a/AVvXsEjwo9fPoph5mleAENDxe-NSmQ8TAxFB-n1bZFATsnrzfHp6IexLXoL1D7bNrJd7s8CdzHzoWCXGncE_ke80Uo9RuqLHVPDDoxDr96j0YssTz9Krv0scz9AHB9rqwnEYlX6bkS9cIPnKdWgP_p7LscZnydf7Rb2XPa88oz0cYiuHw9PPzaFx7ZtxhZGb=w200-h199"
+                     alt="Radio Me Logo"
+                     class="logo-img" />
+            </div>
+            <nav class="main-nav">
+                <a href="index.html" class="active">Home</a>
+                <a href="podcast.html">Podcast</a>
+                <a href="about.html">About</a>
+                <a href="https://open.spotify.com/show/3QVPgIPIkiJvi1J3tj4E2U" target="_blank">Spotify</a>
+            </nav>
+        </div>
+    </header>
+
+    <!-- ===== MAIN ===== -->
+    <main class="container">
+
+        <!-- HERO -->
+        <section class="hero">
+            <h1>
+                ♪♫ <span class="highlight malayalam">ഇഷ്ടംപോലെ പാട്ട്</span> ♫♪<br/>
+                <span style="font-size:0.6em;">Feel The Vibe</span>
+            </h1>
+            <p>
+                Your World, Your Sound, in Stunning 5.1 Surround.<br/>
+                Tune in 24/7 to Radio Me — the free online digital Malayalam radio station.
+            </p>
+            <div class="hero-buttons">
+                <a class="btn-primary" href="#">▶ Listen Live (Coming Soon)</a>
+                <a class="btn-outline" href="https://open.spotify.com/show/3QVPgIPIkiJvi1J3tj4E2U" target="_blank">🎙️ Podcast on Spotify</a>
+            </div>
+        </section>
+
+        <!-- BLOG POSTS (Fetched Live from Blogger) -->
+        <section style="margin: 40px 0;">
+            <h2 class="section-title">📝 Latest Blog Updates</h2>
+            <p class="section-subtitle">Stay tuned with our latest articles and announcements.</p>
+            <div id="blog-posts-container">
+                <p style="color: #70707e;">Loading latest posts...</p>
+            </div>
+        </section>
+
+        <!-- SCHEDULE -->
+        <section style="margin: 40px 0;">
+            <h2 class="section-title">📅 Daily Schedule</h2>
+            <p class="section-subtitle">Tune in at the right time for the perfect vibe.</p>
+            <div class="schedule-grid">
+                <div class="schedule-item"><div class="time">6:00 AM – 9:00 AM</div><div class="name">🌅 Morning Vibe</div></div>
+                <div class="schedule-item"><div class="time">9:00 AM – 10:00 AM</div><div class="name">🍹 Cocktail Ambiance</div></div>
+                <div class="schedule-item"><div class="time">10:00 AM – 12:00 PM</div><div class="name">🎵 Music Treasure</div></div>
+                <div class="schedule-item"><div class="time">12:00 PM – 4:00 PM</div><div class="name">✨ Newgen Ketchup</div></div>
+                <div class="schedule-item"><div class="time">6:30 PM – 8:00 PM</div><div class="name">🎶 Music Ultra</div></div>
+                <div class="schedule-item"><div class="time">8:30 PM – 12:00 AM</div><div class="name">🌙 Dark Tones</div></div>
+            </div>
+        </section>
+
+        <!-- SPOTIFY PODCAST -->
+        <section style="margin: 40px 0;">
+            <h2 class="section-title">🎙️ Latest Podcast</h2>
+            <p class="section-subtitle">Listen to the latest episodes of Radio Me Podcast.</p>
+            <div class="glass-card" style="padding:16px;">
+                <iframe
+                    src="https://open.spotify.com/embed/show/3QVPgIPIkiJvi1J3tj4E2U"
+                    width="100%"
+                    height="352"
+                    frameborder="0"
+                    allowtransparency="true"
+                    allow="encrypted-media"
+                    loading="lazy"
+                    style="border-radius:16px;"
+                ></iframe>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- ===== FOOTER ===== -->
+    <footer class="site-footer">
+        <div class="container">
+            <p>
+                © 2026 <a href="index.html">Radio Me Malayalam</a> &nbsp;|&nbsp;
+                All Rights Reserved &nbsp;|&nbsp;
+                Created with ❤️ by JALworLD Media
+            </p>
+            <p style="margin-top:8px;font-size:0.8rem;">
+                📍 Puthanathani, Malappuram DT, Kerala &nbsp;·&nbsp;
+                📧 <a href="mailto:liveradiome@gmail.com">liveradiome@gmail.com</a> &nbsp;·&nbsp;
+                🌐 <a href="https://fb.com/RadiomeOnline" target="_blank">Facebook</a>
+            </p>
+        </div>
+    </footer>
+
+    <!-- ===== JAVASCRIPT TO FETCH BLOGGER POSTS ===== -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const container = document.getElementById('blog-posts-container');
+            const feedUrl = 'https://radiomelive.blogspot.com/feeds/posts/default?alt=json';
+
+            fetch(feedUrl)
+                .then(response => {
+                    if (!response.ok) throw new Error('Network error');
+                    return response.json();
+                })
+                .then(data => {
+                    const entries = data.feed.entry || [];
+                    if (entries.length === 0) {
+                        container.innerHTML = '<p style="color: #70707e;">No posts yet. Check back soon!</p>';
+                        return;
+                    }
+                    let html = '<div class="blog-grid">';
+                    entries.slice(0, 6).forEach(entry => {
+                        const title = entry.title.$t;
+                        const link = entry.link.find(l => l.rel === 'alternate').href;
+                        const published = new Date(entry.published.$t).toLocaleDateString('en-US', {
+                            year: 'numeric', month: 'short', day: 'numeric'
+                        });
+                        const content = entry.summary ? entry.summary.$t.substring(0, 120) + '...' : 'Click to read more.';
+                        html += `
+                            <div class="glass-card post-card">
+                                <h3><a href="${link}" target="_blank">${title}</a></h3>
+                                <div class="post-meta">${published}</div>
+                                <p>${content}</p>
+                                <a href="${link}" target="_blank" class="btn-outline" style="padding:6px 20px;font-size:0.8rem;">Read More →</a>
+                            </div>
+                        `;
+                    });
+                    html += '</div>';
+                    container.innerHTML = html;
+                })
+                .catch(error => {
+                    console.error('Error fetching posts:', error);
+                    container.innerHTML = `
+                        <div class="glass-card" style="text-align:center;padding:20px;">
+                            <p style="color:#a0a0b0;">⚠️ Could not load live posts. </p>
+                            <p style="color:#70707e;font-size:0.9rem;">Visit our <a href="https://radiomelive.blogspot.com" target="_blank">Blogger site</a> for the latest updates.</p>
+                        </div>
+                    `;
+                });
+        });
+    </script>
+
+</body>
+</html>
