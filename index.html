@@ -11,7 +11,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Noto+Sans+Malayalam:wght@400;500;700&display=swap" rel="stylesheet" />
 
-<!-- Freestream now-playing helper (provided by your stream host) -->
+<!-- Freestream now-playing helper -->
 <script src="https://www.freestream.hu/scripts/script_ic_10180.js" type="text/javascript"></script>
 
 <style>
@@ -140,7 +140,7 @@ section{scroll-margin-top:100px}
 .btn-sm{padding:10px 18px;font-size:.85rem}
 
 /* ============================================================
-   5. NAVBAR — now uses the real logo image
+   5. NAVBAR
    ============================================================ */
 .nav{
   position:fixed;top:0;left:0;right:0;z-index:200;
@@ -261,7 +261,7 @@ body.playing .disc{animation-play-state:running}
   background:radial-gradient(circle at 50% 50%, rgba(10,5,7,.97) 0 30%, rgba(10,5,7,.6) 60%, transparent 72%);
 }
 
-/* ---- Main logo at the centre of the vinyl (larger & better centered) ---- */
+/* Main logo at the centre of the vinyl */
 .disc-label{
   position:relative;z-index:2;
   width:42%;aspect-ratio:1;border-radius:50%;
@@ -443,7 +443,7 @@ body.playing .disc-label{box-shadow:
 .pod time{font-size:.76rem;color:var(--muted);letter-spacing:.05em}
 
 /* ============================================================
-   12. TESTIMONIALS — with real photos
+   12. TESTIMONIALS
    ============================================================ */
 .reviews{display:grid;grid-template-columns:repeat(auto-fit,minmax(290px,1fr));gap:18px}
 .review{
@@ -547,7 +547,7 @@ footer{
 .foot-bottom a:hover{color:var(--gold)}
 
 /* ============================================================
-   15. FIXED PLAYER — now with live now-playing readout
+   15. FIXED PLAYER
    ============================================================ */
 .player{
   position:fixed;left:0;right:0;bottom:0;z-index:300;
@@ -716,7 +716,7 @@ body.playing .viz i{animation-play-state:running;opacity:1}
 <div class="grid-fx"></div>
 <div class="vignette"></div>
 
-<!-- ===== NAVBAR (real logo) ===== -->
+<!-- ===== NAVBAR ===== -->
 <header class="nav" id="nav">
   <a href="#home" class="logo">
     <span class="logo-mark">
@@ -889,7 +889,7 @@ body.playing .viz i{animation-play-state:running;opacity:1}
   </div>
 </section>
 
-<!-- ===== REVIEWS — with real listener photos ===== -->
+<!-- ===== REVIEWS ===== -->
 <section class="sec" id="reviews" style="padding-top:0">
   <div class="wrap">
     <div class="sec-head center reveal">
@@ -1046,7 +1046,7 @@ body.playing .viz i{animation-play-state:running;opacity:1}
   </div>
 </footer>
 
-<!-- ===== FIXED PLAYER — with live now-playing readout ===== -->
+<!-- ===== FIXED PLAYER ===== -->
 <div class="player">
   <div class="player-inner">
     <div class="p-art"><span>♪</span></div>
@@ -1079,13 +1079,15 @@ body.playing .viz i{animation-play-state:running;opacity:1}
 
 <script>
 /* ============================================================
-   🔴 LIVE STREAM (single source)
+   CONFIG
    ============================================================ */
-const STREAM_URL   = "https://freestream.hu:8340/radiome";
-const STREAM_BASE  = "https://freestream.hu:8340";
+const STREAM_URL  = "https://freestream.hu:8340/radiome";
+const STREAM_BASE = "https://freestream.hu:8340";
+const MOUNT       = "/radiome";
+const STATION_ID  = "10180";
 
 /* ============================================================
-   SHOW SCHEDULE  (24h clock)
+   SCHEDULE / CATEGORIES / PODCASTS
    ============================================================ */
 const SHOWS = [
   { title:"Morning Vibe",     desc:"Let's start with morning pleasure — soft melodies to open your day.", from:"06:00", to:"09:00", tags:["Melody","Fresh","Devotional"] },
@@ -1127,8 +1129,9 @@ const navLinks = document.getElementById('navLinks');
 
 let loadedUrl = "";
 let lastSong  = "";
-let isLive    = false;
 let npInterval = null;
+let npObserver = null;
+let mutationTimer = null;
 
 /* ============================================================
    HELPERS
@@ -1156,24 +1159,18 @@ function escapeHtml(s){
 }
 
 /* ============================================================
-   RENDER: TICKER
+   RENDER
    ============================================================ */
 (function renderTicker(){
   const items = [
-    "♪♫ ഇഷ്ടംപോലെ പാട്ട് ♫♪",
-    "24×7 Live Malayalam Radio",
-    "5.1 Digital Surround Sound",
-    "Listener Request Based",
-    "Broadcasting from Puthanathani, Kerala",
-    "Feel The Vibe ♪ ♫"
+    "♪♫ ഇഷ്ടംപോലെ പാട്ട് ♫♪", "24×7 Live Malayalam Radio",
+    "5.1 Digital Surround Sound", "Listener Request Based",
+    "Broadcasting from Puthanathani, Kerala", "Feel The Vibe ♪ ♫"
   ];
   const html = items.map(t => `<span>${t}</span>`).join('');
   document.getElementById('ticker').innerHTML = html + html;
 })();
 
-/* ============================================================
-   RENDER: SHOWS
-   ============================================================ */
 (function renderShows(){
   document.getElementById('showsGrid').innerHTML = SHOWS.map((s, i) => `
     <article class="show reveal" data-show="${i}">
@@ -1195,15 +1192,9 @@ function markLiveShow(){
   if (live) pTitle.textContent = `${live.title} · Radio Me ♪ ♫`;
 }
 
-/* ============================================================
-   RENDER: CATEGORIES
-   ============================================================ */
 document.getElementById('cats').innerHTML =
   CATEGORIES.map(c => `<button class="cat"><i>${c.i}</i>${c.n}</button>`).join('');
 
-/* ============================================================
-   RENDER: PODCASTS
-   ============================================================ */
 document.getElementById('podsGrid').innerHTML = PODCASTS.map(p => `
   <article class="pod reveal" data-pod="${p.ep}">
     <div class="pod-art">🎧</div>
@@ -1222,7 +1213,7 @@ document.getElementById('podsGrid').addEventListener('click', e => {
 });
 
 /* ============================================================
-   NOW PLAYING — display helper
+   NOW PLAYING — display
    ============================================================ */
 function setNowPlaying(text){
   const display = (text || '').toString().trim() || 'Live Malayalam Radio · 24×7';
@@ -1250,78 +1241,123 @@ function showScheduleFallback(){
 }
 
 /* ============================================================
-   NOW PLAYING — fetch metadata
-   Tries common Icecast/Shoutcast endpoints + any globals
-   exposed by the freestream.hu helper script.
+   NOW PLAYING — Source 1: FreeStream script global vars
    ============================================================ */
-
-function parseIcecastJson(txt){
-  try{
-    const j = JSON.parse(txt);
-    const src = j?.icestats?.source;
-    if (!src) return null;
-    const s = Array.isArray(src) ? src[0] : src;
-    return s?.title || s?.yp_currently_playing || s?.songtitle || null;
-  }catch(e){ return null; }
-}
-function parseShoutcast(txt){
-  const m = txt.match(/<body>(.*?)<\/body>/i);
-  if (!m) return null;
-  const parts = m[1].split(',');
-  return parts[6]?.trim() || null;
-}
-function parseIcecastXml(txt){
-  const m = txt.match(/Current Song:\s*<\/td>\s*<td[^>]*>\s*([^<]+)/i);
-  return m ? m[1].trim() : null;
-}
-
-async function fetchMetaFromEndpoints(){
-  const endpoints = [
-    { url: `${STREAM_BASE}/status-json.xsl`,   parse: parseIcecastJson },
-    { url: `${STREAM_BASE}/currentsong?sid=1`, parse: t => (t||'').trim() || null },
-    { url: `${STREAM_BASE}/7.html`,            parse: parseShoutcast },
-    { url: `${STREAM_BASE}/status.xsl`,        parse: parseIcecastXml }
+function scanFreeStreamGlobals(){
+  const direct = [
+    window['ic_' + STATION_ID],
+    window['np_' + STATION_ID],
+    window['nowplaying_' + STATION_ID],
+    window['freestream_' + STATION_ID],
+    window['fs_' + STATION_ID],
+    window.ic_nowplaying,
+    window.freestream_nowplaying,
+    window.freestreamNowPlaying,
+    window.nowplaying,
+    window.now_playing,
+    window.np
   ];
-
-  for (const ep of endpoints){
-    try{
-      const ctrl = new AbortController();
-      const to = setTimeout(() => ctrl.abort(), 4000);
-      const res = await fetch(ep.url, { cache:'no-store', signal: ctrl.signal });
-      clearTimeout(to);
-      if (!res.ok) continue;
-      const txt = await res.text();
-      const song = ep.parse(txt);
-      if (song && song.length > 1) return song;
-    }catch(e){ /* try next */ }
+  for (const v of direct){
+    if (!v) continue;
+    if (typeof v === 'string' && v.trim().length > 1) return v.trim();
+    if (typeof v === 'object'){
+      const t = v.title || v.song || v.track || v.currentSong ||
+                v.nowPlaying || v.current || v.artist_title;
+      if (typeof t === 'string' && t.trim().length > 1) return t.trim();
+    }
   }
+
+  try{
+    for (const k of Object.keys(window)){
+      if (!k.includes(STATION_ID)) continue;
+      const v = window[k];
+      if (typeof v === 'string' && v.trim().length > 1 && v.length < 250) return v.trim();
+      if (v && typeof v === 'object'){
+        const t = v.title || v.song || v.track || v.currentSong || v.nowPlaying;
+        if (typeof t === 'string' && t.trim().length > 1) return t.trim();
+      }
+    }
+  }catch(e){ /* ignore */ }
+
   return null;
 }
 
-/* Look for any global the freestream.hu script might expose */
-function checkFreestreamGlobals(){
-  const keys = ['nowplaying','now_playing','np','ic_nowplaying','freestream_nowplaying','ic_song'];
-  for (const k of keys){
-    const v = window[k];
-    if (typeof v === 'string' && v.length > 1) return v;
-    if (v && typeof v === 'object'){
-      const t = v.title || v.song || v.currentSong || v.nowPlaying || v.track;
-      if (typeof t === 'string' && t.length > 1) return t;
+/* ============================================================
+   NOW PLAYING — Source 2: FreeStream script DOM output
+   ============================================================ */
+function scanFreeStreamDOM(){
+  const selectors = [
+    `[id*="${STATION_ID}"]`, `[class*="${STATION_ID}"]`,
+    '[id*="nowplaying"]', '[class*="nowplaying"]',
+    '[id*="now_playing"]', '[class*="now_playing"]',
+    '[id*="ic_title"]', '[class*="ic_title"]',
+    '#ic_title', '.ic_title'
+  ];
+  for (const sel of selectors){
+    let els;
+    try{ els = document.querySelectorAll(sel); }catch(e){ continue; }
+    for (const el of els){
+      if (el.closest('.player') || el.closest('.p-now')) continue;
+      const txt = (el.textContent || '').trim();
+      if (txt && txt.length > 1 && txt.length < 250) return txt;
     }
   }
   return null;
 }
 
-async function refreshNowPlaying(){
-  // 1) Try freestream helper's global first (may be populated asynchronously)
-  let song = checkFreestreamGlobals();
+/* ============================================================
+   NOW PLAYING — Source 3: Icecast JSON (with mount filter)
+   ============================================================ */
+function parseIcecastJSON(j){
+  const src = j && j.icestats && j.icestats.source;
+  if (!src) return null;
+  const list = Array.isArray(src) ? src : [src];
 
-  // 2) Try direct endpoints (works if your host enables CORS)
-  if (!song) song = await fetchMetaFromEndpoints();
+  let target = list.find(s => {
+    const lu = (s && s.listenurl) || '';
+    const mp = (s && s.mount)    || '';
+    return mp === MOUNT || lu.endsWith(MOUNT) || lu.includes(MOUNT);
+  });
+  if (!target) target = list.find(s => s && (s.title || s.yp_currently_playing || s.songtitle));
+  if (!target) target = list[0];
+  if (!target) return null;
+
+  const t = target.title || target.yp_currently_playing || target.songtitle;
+  return (t && String(t).trim().length > 1) ? String(t).trim() : null;
+}
+
+async function fetchIcecastJSON(){
+  const urls = [
+    `${STREAM_BASE}/status-json.xsl?mount=${encodeURIComponent(MOUNT)}`,
+    `${STREAM_BASE}/status-json.xsl`
+  ];
+  for (const url of urls){
+    try{
+      const ctrl = new AbortController();
+      const to = setTimeout(() => ctrl.abort(), 4500);
+      const res = await fetch(url, { cache:'no-store', mode:'cors', signal: ctrl.signal });
+      clearTimeout(to);
+      if (!res.ok) continue;
+      const j = await res.json();
+      const t = parseIcecastJSON(j);
+      if (t) return t;
+    }catch(e){ /* try next */ }
+  }
+  return null;
+}
+
+/* ============================================================
+   MASTER REFRESH
+   ============================================================ */
+async function refreshNowPlaying(){
+  let song = scanFreeStreamGlobals();
+  if (!song) song = scanFreeStreamDOM();
+  if (!song) song = await fetchIcecastJSON();
 
   if (song && song !== lastSong){
     lastSong = song;
     setNowPlaying(song);
+    console.log('[Radio Me] Now playing:', song);
   } else if (!lastSong){
     showScheduleFallback();
   }
@@ -1330,11 +1366,43 @@ async function refreshNowPlaying(){
 function startNowPlayingPolling(){
   if (npInterval) clearInterval(npInterval);
   refreshNowPlaying();
-  npInterval = setInterval(refreshNowPlaying, 12000); // every 12s
+  npInterval = setInterval(refreshNowPlaying, 10000);
+
+  if (!npObserver && document.body){
+    npObserver = new MutationObserver(() => {
+      clearTimeout(mutationTimer);
+      mutationTimer = setTimeout(() => {
+        const song = scanFreeStreamDOM() || scanFreeStreamGlobals();
+        if (song && song !== lastSong){
+          lastSong = song;
+          setNowPlaying(song);
+          console.log('[Radio Me] Now playing (DOM):', song);
+        }
+      }, 400);
+    });
+    npObserver.observe(document.body, { childList:true, subtree:true, characterData:true });
+  }
 }
+
 function stopNowPlayingPolling(){
   if (npInterval){ clearInterval(npInterval); npInterval = null; }
+  if (npObserver){ npObserver.disconnect(); npObserver = null; }
 }
+
+/* One-time diagnostic — helps you debug */
+setTimeout(() => {
+  try{
+    const fsKeys = Object.keys(window).filter(k =>
+      k.toLowerCase().includes('freestream') || k.includes(STATION_ID) ||
+      k.toLowerCase().includes('nowplay')
+    );
+    console.log('[Radio Me] FreeStream window keys:', fsKeys);
+    fsKeys.forEach(k => {
+      const v = window[k];
+      console.log('  ', k, '=', typeof v === 'object' ? JSON.stringify(v).slice(0,120) : v);
+    });
+  }catch(e){}
+}, 2500);
 
 /* ============================================================
    AUDIO PLAYER
@@ -1350,10 +1418,7 @@ function setPlayingUI(playing){
 let connectTimer = null;
 
 async function togglePlay(){
-  if (!STREAM_URL){
-    toast('🎧 No stream URL configured.');
-    return;
-  }
+  if (!STREAM_URL){ toast('🎧 No stream URL configured.'); return; }
 
   if (audio.paused){
     if (loadedUrl !== STREAM_URL){
@@ -1382,7 +1447,7 @@ async function togglePlay(){
   }
 }
 
-audio.addEventListener('playing', () => { clearTimeout(connectTimer); setPlayingUI(true); isLive = true; startNowPlayingPolling(); });
+audio.addEventListener('playing', () => { clearTimeout(connectTimer); setPlayingUI(true); startNowPlayingPolling(); });
 audio.addEventListener('pause',   () => { setPlayingUI(false); stopNowPlayingPolling(); });
 audio.addEventListener('waiting', () => setNowPlaying('Buffering…'));
 audio.addEventListener('stalled', () => setNowPlaying('Stream stalled — reconnecting…'));
@@ -1401,12 +1466,10 @@ document.querySelectorAll('[data-play]').forEach(el => {
   });
 });
 
-/* Volume */
 const vol = document.getElementById('vol');
 audio.volume = vol.value;
 vol.addEventListener('input', () => { audio.volume = vol.value; });
 
-/* Spacebar shortcut */
 document.addEventListener('keydown', e => {
   if (e.code === 'Space' && !['INPUT','TEXTAREA'].includes(document.activeElement.tagName)){
     e.preventDefault();
@@ -1436,7 +1499,6 @@ document.getElementById('contactForm').addEventListener('submit', e => {
   const name  = f.name.value.trim();
   const email = f.email.value.trim();
   const msg   = f.message.value.trim();
-
   if (!name || !email || !msg){ toast('⚠️ Please fill in all fields.'); return; }
 
   const subject = encodeURIComponent(`Radio Me ♪ ♫ — Message from ${name}`);
