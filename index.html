@@ -11,17 +11,17 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Noto+Sans+Malayalam:wght@400;500;700&display=swap" rel="stylesheet" />
 
+<!-- Freestream now-playing helper (provided by your stream host) -->
+<script src="https://www.freestream.hu/scripts/script_ic_10180.js" type="text/javascript"></script>
+
 <style>
 /* ============================================================
    1. TOKENS & RESET
-   ⚑ CHANGE THE 5 COLOR VALUES BELOW TO MATCH YOUR LOGO EXACTLY
    ============================================================ */
 :root{
-  /* ▼▼▼ BRAND PALETTE ▼▼▼ */
-  --red:    #e6193c;   /* primary   */
-  --orange: #ff7a18;   /* secondary */
-  --gold:   #ffc53d;   /* accent    */
-  /* ▲▲▲ BRAND PALETTE ▲▲▲ */
+  --red:    #e6193c;
+  --orange: #ff7a18;
+  --gold:   #ffc53d;
 
   --bg:#0a0507;
   --bg-soft:#140a0d;
@@ -140,36 +140,39 @@ section{scroll-margin-top:100px}
 .btn-sm{padding:10px 18px;font-size:.85rem}
 
 /* ============================================================
-   5. NAVBAR
+   5. NAVBAR — now uses the real logo image
    ============================================================ */
 .nav{
   position:fixed;top:0;left:0;right:0;z-index:200;
   display:flex;align-items:center;justify-content:space-between;gap:18px;
-  padding:14px clamp(16px,4vw,44px);
+  padding:12px clamp(16px,4vw,44px);
   transition:.35s;
   border-bottom:1px solid transparent;
 }
 .nav.scrolled{
-  background:rgba(10,5,7,.8);
+  background:rgba(10,5,7,.82);
   backdrop-filter:blur(20px) saturate(160%);
   border-bottom-color:var(--stroke);
 }
-.logo{display:flex;align-items:center;gap:11px;font-weight:800;font-size:1.12rem;letter-spacing:-.02em}
+.logo{display:flex;align-items:center;gap:13px;font-weight:800;font-size:1.12rem;letter-spacing:-.02em}
 
-/* ---- logo mark now holds your real header logo ---- */
 .logo-mark{
-  width:42px;height:42px;border-radius:13px;display:grid;place-items:center;
+  width:54px;height:54px;border-radius:15px;
+  overflow:hidden;flex:0 0 auto;
   background:var(--grad);
-  box-shadow:0 8px 26px -8px rgba(255,122,24,.95), 0 0 0 1px rgba(255,255,255,.1);
-  position:relative;overflow:hidden;flex:0 0 auto;
+  box-shadow:0 10px 30px -10px rgba(255,122,24,.9), 0 0 0 1px rgba(255,255,255,.12);
+  position:relative;
+  transition:.35s;
 }
-.logo-mark svg{width:20px;height:20px;fill:#fff;position:relative;z-index:1}
 .logo-mark img{
-  position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:2;
+  width:100%;height:100%;object-fit:cover;display:block;
+  position:absolute;inset:0;
 }
+.logo:hover .logo-mark{transform:rotate(-5deg) scale(1.05)}
 
 .logo b{
   background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent;
+  display:block;line-height:1.15;
 }
 .logo small{display:block;font-size:.6rem;letter-spacing:.3em;color:var(--muted);font-weight:500;text-transform:uppercase}
 
@@ -210,7 +213,7 @@ section{scroll-margin-top:100px}
   min-height:100svh;display:grid;grid-template-columns:1.05fr .95fr;
   align-items:center;gap:clamp(30px,5vw,70px);
   max-width:var(--maxw);margin:0 auto;
-  padding:clamp(120px,15vh,170px) clamp(16px,4vw,44px) 70px;
+  padding:clamp(130px,15vh,180px) clamp(16px,4vw,44px) 70px;
 }
 .hero-badge{
   display:inline-flex;align-items:center;gap:10px;padding:8px 16px;border-radius:100px;
@@ -254,21 +257,43 @@ section{scroll-margin-top:100px}
 body.playing .disc{animation-play-state:running}
 @keyframes spin{to{transform:rotate(360deg)}}
 .disc::before{
-  content:"";position:absolute;inset:12%;border-radius:50%;
-  background:radial-gradient(circle at 50% 50%, rgba(10,5,7,.96) 0 30%, rgba(10,5,7,.55) 60%, transparent 72%);
+  content:"";position:absolute;inset:11%;border-radius:50%;
+  background:radial-gradient(circle at 50% 50%, rgba(10,5,7,.97) 0 30%, rgba(10,5,7,.6) 60%, transparent 72%);
 }
 
-/* ---- disc centre now holds your main logo ---- */
+/* ---- Main logo at the centre of the vinyl (larger & better centered) ---- */
 .disc-label{
-  position:relative;z-index:2;width:36%;aspect-ratio:1;border-radius:50%;
-  display:grid;place-items:center;overflow:hidden;
+  position:relative;z-index:2;
+  width:42%;aspect-ratio:1;border-radius:50%;
+  overflow:hidden;
   background:radial-gradient(circle at 34% 28%, #3a2430, #0d0609);
-  box-shadow:inset 0 0 34px rgba(0,0,0,.9), 0 0 0 1px rgba(255,255,255,.1);
+  box-shadow:
+    inset 0 0 30px rgba(0,0,0,.9),
+    0 0 0 1px rgba(255,255,255,.12),
+    0 0 0 8px rgba(10,5,7,.85),
+    0 0 0 9px rgba(255,197,61,.18);
+  display:grid;place-items:center;
+  transition:.4s;
+}
+.disc-label::before{
+  content:"♪";
+  position:absolute;
+  font-size:clamp(1.6rem,4vw,2.4rem);
+  color:#fff;
+  z-index:1;
+  opacity:.5;
 }
 .disc-label img{
-  position:absolute;inset:0;width:100%;height:100%;object-fit:cover;border-radius:50%;z-index:2;
+  position:relative;z-index:2;
+  width:100%;height:100%;object-fit:cover;display:block;border-radius:50%;
 }
-.disc-fallback{position:relative;z-index:1;font-size:clamp(1.6rem,4vw,2.4rem);color:#fff}
+body.playing .disc-label{box-shadow:
+  inset 0 0 30px rgba(0,0,0,.9),
+  0 0 0 1px rgba(255,255,255,.16),
+  0 0 0 8px rgba(10,5,7,.85),
+  0 0 0 9px rgba(255,197,61,.4),
+  0 0 40px rgba(255,122,24,.5);
+}
 
 .ring{
   position:absolute;border-radius:50%;border:1px solid rgba(255,197,61,.14);
@@ -418,7 +443,7 @@ body.playing .disc{animation-play-state:running}
 .pod time{font-size:.76rem;color:var(--muted);letter-spacing:.05em}
 
 /* ============================================================
-   12. TESTIMONIALS
+   12. TESTIMONIALS — with real photos
    ============================================================ */
 .reviews{display:grid;grid-template-columns:repeat(auto-fit,minmax(290px,1fr));gap:18px}
 .review{
@@ -429,12 +454,24 @@ body.playing .disc{animation-play-state:running}
 .review:hover{transform:translateY(-6px);border-color:var(--stroke-hi);background:var(--card-hi)}
 .quote-mark{font-size:2.6rem;line-height:.6;background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent;font-weight:800}
 .review p{margin:0;color:#d9c9ce;font-size:.95rem;font-family:'Noto Sans Malayalam','Outfit',sans-serif}
-.reviewer{display:flex;align-items:center;gap:13px;margin-top:auto}
+.reviewer{display:flex;align-items:center;gap:14px;margin-top:auto}
+
 .avatar{
-  width:44px;height:44px;border-radius:50%;display:grid;place-items:center;font-weight:700;
-  background:var(--grad);color:#fff;font-size:.95rem;flex:0 0 auto;
+  width:54px;height:54px;border-radius:50%;position:relative;flex:0 0 auto;
+  overflow:hidden;display:grid;place-items:center;
+  background:var(--grad);
+  box-shadow:0 8px 22px -8px rgba(255,122,24,.7), 0 0 0 2px rgba(255,197,61,.3);
 }
-.reviewer b{display:block;font-size:.92rem;font-weight:700}
+.avatar > span{
+  position:relative;z-index:1;
+  font-weight:800;color:#fff;font-size:1rem;letter-spacing:.02em;
+}
+.avatar img{
+  position:absolute;inset:0;width:100%;height:100%;
+  object-fit:cover;z-index:2;display:block;
+}
+
+.reviewer b{display:block;font-size:.95rem;font-weight:700}
 .reviewer span{font-size:.76rem;color:var(--muted)}
 .review.cta-card{
   background:var(--grad-soft);border:1px dashed var(--stroke-hi);
@@ -510,18 +547,18 @@ footer{
 .foot-bottom a:hover{color:var(--gold)}
 
 /* ============================================================
-   15. FIXED PLAYER
+   15. FIXED PLAYER — now with live now-playing readout
    ============================================================ */
 .player{
   position:fixed;left:0;right:0;bottom:0;z-index:300;
-  background:rgba(14,7,10,.85);
+  background:rgba(14,7,10,.88);
   backdrop-filter:blur(26px) saturate(170%);
   border-top:1px solid var(--stroke);
   padding:12px clamp(14px,3vw,32px);
 }
 .player-inner{
   max-width:var(--maxw);margin:0 auto;
-  display:flex;align-items:center;gap:clamp(12px,2.4vw,24px);
+  display:flex;align-items:center;gap:clamp(12px,2.4vw,22px);
 }
 .p-art{
   flex:0 0 auto;width:56px;height:56px;border-radius:16px;display:grid;place-items:center;
@@ -531,16 +568,39 @@ footer{
 body.playing .p-art{animation:spin 6s linear infinite}
 .p-art::after{content:"";position:absolute;inset:26%;border-radius:50%;background:#0a0507}
 .p-art span{position:relative;z-index:2;filter:drop-shadow(0 0 6px rgba(0,0,0,.9))}
-.p-meta{min-width:0;flex:1 1 auto}
+
+.p-meta{min-width:0;flex:1 1 auto;display:flex;flex-direction:column;gap:2px}
 .p-title{
-  font-size:.92rem;font-weight:700;letter-spacing:-.01em;white-space:nowrap;
-  overflow:hidden;text-overflow:ellipsis;
+  font-size:.9rem;font-weight:700;letter-spacing:-.01em;white-space:nowrap;
+  overflow:hidden;text-overflow:ellipsis;color:#fff;
 }
-.p-sub{
-  font-size:.74rem;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
-  display:flex;align-items:center;gap:7px;margin-top:2px;
+.p-now{
+  display:flex;align-items:center;gap:8px;
+  font-size:.8rem;font-weight:600;color:var(--gold);
+  min-width:0;
 }
-.p-sub .dot{width:5px;height:5px}
+.p-now-ico{
+  flex:0 0 auto;font-size:.85rem;
+  animation:spin 3.2s linear infinite;
+  display:inline-block;
+  filter:drop-shadow(0 0 6px rgba(255,197,61,.6));
+}
+body:not(.playing) .p-now-ico{animation-play-state:paused;opacity:.7}
+.p-now-track{
+  flex:1;min-width:0;overflow:hidden;position:relative;
+  -webkit-mask-image:linear-gradient(90deg, transparent 0, #000 10px, #000 calc(100% - 22px), transparent 100%);
+  mask-image:linear-gradient(90deg, transparent 0, #000 10px, #000 calc(100% - 22px), transparent 100%);
+}
+.p-now-scroll{
+  display:inline-block;white-space:nowrap;
+  will-change:transform;
+}
+.p-now-scroll.scroll{animation:scrollNow 18s linear infinite}
+@keyframes scrollNow{
+  0%{transform:translateX(0)}
+  100%{transform:translateX(-50%)}
+}
+
 .viz{display:flex;align-items:flex-end;gap:3px;height:30px;flex:0 0 auto}
 .viz i{
   width:3px;border-radius:3px;background:var(--grad);height:20%;
@@ -555,13 +615,6 @@ body.playing .viz i{animation-play-state:running;opacity:1}
 .viz i:nth-child(6){animation-delay:.75s}
 @keyframes eq{0%,100%{height:16%}50%{height:100%}}
 
-.p-controls{display:flex;align-items:center;gap:10px;flex:0 0 auto}
-.server-btn{
-  padding:8px 14px;border-radius:100px;font-size:.74rem;font-weight:600;
-  background:var(--card);border:1px solid var(--stroke);color:var(--muted);transition:.3s;
-}
-.server-btn:hover{color:#fff;border-color:var(--stroke-hi)}
-.server-btn.active{background:var(--grad);color:#fff;border-color:transparent}
 .play-btn{
   width:54px;height:54px;border-radius:50%;display:grid;place-items:center;
   background:var(--grad);color:#fff;font-size:1.1rem;
@@ -608,7 +661,7 @@ body.playing .viz i{animation-play-state:running;opacity:1}
    18. RESPONSIVE
    ============================================================ */
 @media(max-width:1024px){
-  .hero{grid-template-columns:1fr;text-align:center;padding-top:130px}
+  .hero{grid-template-columns:1fr;text-align:center;padding-top:140px}
   .hero p.lead{margin-inline:auto}
   .hero-actions,.hero-stats{justify-content:center}
   .hero-visual{order:-1;min-height:290px}
@@ -620,9 +673,9 @@ body.playing .viz i{animation-play-state:running;opacity:1}
 }
 @media(max-width:860px){
   .nav-links{
-    position:fixed;top:70px;left:16px;right:16px;flex-direction:column;align-items:stretch;
+    position:fixed;top:78px;left:16px;right:16px;flex-direction:column;align-items:stretch;
     gap:4px;padding:14px;border-radius:22px;
-    background:rgba(18,9,12,.96);border:1px solid var(--stroke);
+    background:rgba(18,9,12,.97);border:1px solid var(--stroke);
     backdrop-filter:blur(24px);box-shadow:var(--shadow);
     opacity:0;visibility:hidden;transform:translateY(-14px);transition:.32s;
   }
@@ -637,14 +690,17 @@ body.playing .viz i{animation-play-state:running;opacity:1}
   .viz{display:none}
   .foot-grid{grid-template-columns:1fr}
   .hero-stats{gap:22px}
+  .logo-mark{width:48px;height:48px;border-radius:14px}
 }
 @media(max-width:560px){
   body{padding-bottom:96px}
   .p-art{width:46px;height:46px;border-radius:13px}
   .play-btn{width:48px;height:48px}
-  .server-btn{padding:7px 11px;font-size:.68rem}
   .float-chip{font-size:.68rem;padding:8px 12px}
   .ticker-track{gap:30px}
+  .logo-mark{width:44px;height:44px;border-radius:12px}
+  .logo small{display:none}
+  .avatar{width:48px;height:48px}
 }
 @media(prefers-reduced-motion:reduce){
   *,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}
@@ -660,13 +716,12 @@ body.playing .viz i{animation-play-state:running;opacity:1}
 <div class="grid-fx"></div>
 <div class="vignette"></div>
 
-<!-- ===== NAVBAR ===== -->
+<!-- ===== NAVBAR (real logo) ===== -->
 <header class="nav" id="nav">
   <a href="#home" class="logo">
     <span class="logo-mark">
-      <svg viewBox="0 0 24 24"><path d="M3 10v4h3l4 4V6L6 10H3zm13.5 2a4.5 4.5 0 0 0-2.5-4v8a4.5 4.5 0 0 0 2.5-4zM14 3.2v2.1a6.8 6.8 0 0 1 0 13.4v2.1a8.9 8.9 0 0 0 0-17.6z"/></svg>
-      <img src="https://lh3.googleusercontent.com/blogger_img_proxy/AEn0k_v1eU-KpqFdoUycMGykZA5wYVHlKYLbT4yCfMCO8gNgRyy7AER4dIu5HMsMt_AlLEU1_EEQmZ-mmYLtMTN4tzcM1iA"
-           alt="Radio Me" referrerpolicy="no-referrer" onerror="this.remove()" />
+      <img src="https://blogger.googleusercontent.com/img/a/AVvXsEjwo9fPoph5mleAENDxe-NSmQ8TAxFB-n1bZFATsnrzfHp6IexLXoL1D7bNrJd7s8CdzHzoWCXGncE_ke80Uo9RuqLHVPDDoxDr96j0YssTz9Krv0scz9AHB9rqwnEYlX6bkS9cIPnKdWgP_p7LscZnydf7Rb2XPa88oz0cYiuHw9PPzaFx7ZtxhZGb=w200-h199"
+           alt="Radio Me" referrerpolicy="no-referrer" />
     </span>
     <span>
       <b>Radio Me ♪ ♫</b>
@@ -720,9 +775,8 @@ body.playing .viz i{animation-play-state:running;opacity:1}
     <div class="ring"></div><div class="ring"></div><div class="ring"></div>
     <div class="disc">
       <div class="disc-label">
-        <span class="disc-fallback">♪</span>
         <img src="https://blogger.googleusercontent.com/img/a/AVvXsEjwo9fPoph5mleAENDxe-NSmQ8TAxFB-n1bZFATsnrzfHp6IexLXoL1D7bNrJd7s8CdzHzoWCXGncE_ke80Uo9RuqLHVPDDoxDr96j0YssTz9Krv0scz9AHB9rqwnEYlX6bkS9cIPnKdWgP_p7LscZnydf7Rb2XPa88oz0cYiuHw9PPzaFx7ZtxhZGb=w200-h199"
-             alt="Radio Me" referrerpolicy="no-referrer" onerror="this.remove()" />
+             alt="Radio Me" referrerpolicy="no-referrer" />
       </div>
     </div>
     <div class="float-chip a">🎧 5.1 Digital Surround</div>
@@ -780,7 +834,7 @@ body.playing .viz i{animation-play-state:running;opacity:1}
         </p>
         <ul class="feature-list">
           <li>Instant playback — no tuning, no buffering drama</li>
-          <li>Dual streaming servers for uninterrupted listening</li>
+          <li>Listener-request driven playlist all day long</li>
           <li>Curated day-parts from morning vibe to dark tones</li>
           <li>Podcasts on culture, tech, health &amp; everyday life</li>
         </ul>
@@ -790,9 +844,8 @@ body.playing .viz i{animation-play-state:running;opacity:1}
           <div class="ring"></div><div class="ring"></div>
           <div class="disc" style="width:min(300px,66vw)">
             <div class="disc-label">
-              <span class="disc-fallback">♫</span>
               <img src="https://blogger.googleusercontent.com/img/a/AVvXsEjwo9fPoph5mleAENDxe-NSmQ8TAxFB-n1bZFATsnrzfHp6IexLXoL1D7bNrJd7s8CdzHzoWCXGncE_ke80Uo9RuqLHVPDDoxDr96j0YssTz9Krv0scz9AHB9rqwnEYlX6bkS9cIPnKdWgP_p7LscZnydf7Rb2XPa88oz0cYiuHw9PPzaFx7ZtxhZGb=w200-h199"
-                   alt="Radio Me" referrerpolicy="no-referrer" loading="lazy" onerror="this.remove()" />
+                   alt="Radio Me" referrerpolicy="no-referrer" loading="lazy" />
             </div>
           </div>
         </div>
@@ -836,7 +889,7 @@ body.playing .viz i{animation-play-state:running;opacity:1}
   </div>
 </section>
 
-<!-- ===== REVIEWS ===== -->
+<!-- ===== REVIEWS — with real listener photos ===== -->
 <section class="sec" id="reviews" style="padding-top:0">
   <div class="wrap">
     <div class="sec-head center reveal">
@@ -848,7 +901,11 @@ body.playing .viz i{animation-play-state:running;opacity:1}
         <span class="quote-mark">“</span>
         <p>എവിടെയും ഇപ്പോഴും ഏത് സമയത്തും പാട്ടുകൾ ആസ്വദിക്കാൻ അവസരം ഉണ്ടാക്കി തന്ന മലയാളികളുടെ സ്വന്തം റേഡിയോ ചാനൽ 'റേഡിയോ മി' ക്ക് ഒരായിരം അഭിനന്ദനങ്ങൾ.</p>
         <div class="reviewer">
-          <span class="avatar">JJ</span>
+          <span class="avatar">
+            <span>JJ</span>
+            <img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEiKuZD2DJLeiFRNN84md5SVa8JMPOTqnv6ICTVq-Jpro5YUAmkv85AZTTfigycevwC0XuSdwthH5LK1yckgXq3WgziX_nMMkRm4oBoMGMn-CuHGygjmwT6Co9xcZNCtQgzcuYiBhz_8baw/s280/13.jpg"
+                 alt="Jamin Jamal" loading="lazy" referrerpolicy="no-referrer" onerror="this.remove()" />
+          </span>
           <div><b>Jamin Jamal</b><span>UX Designer</span></div>
         </div>
       </article>
@@ -857,7 +914,11 @@ body.playing .viz i{animation-play-state:running;opacity:1}
         <span class="quote-mark">“</span>
         <p>'റേഡിയോ മി' യുടെ സജീവമായ സംഗീതപരിപാടികൾ സദാ പ്രേക്ഷകർക്ക് ആസ്വാദനമാർഗ്ഗങ്ങൾ നൽകുന്നു. ഓരോ പാട്ടും പുതുമയിലും സന്തോഷത്തിലാണ് നിറഞ്ഞിരിക്കുന്നതും, എപ്പോഴും പുതുതായി രചിക്കപ്പെട്ടവയെ കണ്ടെത്താൻ കഴിയുന്നു.</p>
         <div class="reviewer">
-          <span class="avatar">SV</span>
+          <span class="avatar">
+            <span>SV</span>
+            <img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEgQnklUk8MwGDIbi3iYEm7m6yLOCIl3JhVNGFdfypSe0qUBk2yBBbQ6PGysYIbSgR5ztF0zYTP2KdElsPhONaCeQu-VsdTO4t56tE1VuHii99HeD5ygrMIdqxhb2uCNWl-MGa9Jo8eY88AWMBP8TENlq2InpMH5BvaaU9-FPothdA2x2t7hZgCu-Lv_naw/s640/file.jpg"
+                 alt="Sajna V" loading="lazy" referrerpolicy="no-referrer" onerror="this.remove()" />
+          </span>
           <div><b>Sajna V</b><span>Regular Listener</span></div>
         </div>
       </article>
@@ -866,7 +927,11 @@ body.playing .viz i{animation-play-state:running;opacity:1}
         <span class="quote-mark">“</span>
         <p>സംഗീത പ്രേമികൾക്ക് എന്നും ഒരു നല്ല കൂട്ടായി റേഡിയോ മി ഉണ്ടാകട്ടെ എന്ന് ആശംസിക്കുന്നു.</p>
         <div class="reviewer">
-          <span class="avatar">AJ</span>
+          <span class="avatar">
+            <span>AJ</span>
+            <img src="https://i.postimg.cc/tJt0tJ48/abd.jpg"
+                 alt="Abdul Jaleel" loading="lazy" referrerpolicy="no-referrer" onerror="this.remove()" />
+          </span>
           <div><b>Abdul Jaleel</b><span>Designer</span></div>
         </div>
       </article>
@@ -941,9 +1006,8 @@ body.playing .viz i{animation-play-state:running;opacity:1}
       <div>
         <a href="#home" class="logo">
           <span class="logo-mark">
-            <svg viewBox="0 0 24 24"><path d="M3 10v4h3l4 4V6L6 10H3zm13.5 2a4.5 4.5 0 0 0-2.5-4v8a4.5 4.5 0 0 0 2.5-4zM14 3.2v2.1a6.8 6.8 0 0 1 0 13.4v2.1a8.9 8.9 0 0 0 0-17.6z"/></svg>
-            <img src="https://lh3.googleusercontent.com/blogger_img_proxy/AEn0k_v1eU-KpqFdoUycMGykZA5wYVHlKYLbT4yCfMCO8gNgRyy7AER4dIu5HMsMt_AlLEU1_EEQmZ-mmYLtMTN4tzcM1iA"
-                 alt="Radio Me" referrerpolicy="no-referrer" loading="lazy" onerror="this.remove()" />
+            <img src="https://blogger.googleusercontent.com/img/a/AVvXsEjwo9fPoph5mleAENDxe-NSmQ8TAxFB-n1bZFATsnrzfHp6IexLXoL1D7bNrJd7s8CdzHzoWCXGncE_ke80Uo9RuqLHVPDDoxDr96j0YssTz9Krv0scz9AHB9rqwnEYlX6bkS9cIPnKdWgP_p7LscZnydf7Rb2XPa88oz0cYiuHw9PPzaFx7ZtxhZGb=w200-h199"
+                 alt="Radio Me" loading="lazy" referrerpolicy="no-referrer" />
           </span>
           <span><b>Radio Me ♪ ♫</b><small>Feel the vibe</small></span>
         </a>
@@ -968,8 +1032,7 @@ body.playing .viz i{animation-play-state:running;opacity:1}
       <div class="foot-col">
         <h4>Listen</h4>
         <ul>
-          <li><a href="#" data-play>▶ Live Server 1</a></li>
-          <li><a href="#" data-play>▶ Live Server 2</a></li>
+          <li><a href="#" data-play>▶ Play Live Stream</a></li>
           <li><a href="https://radiomelive.blogspot.com" target="_blank" rel="noopener">Not working? Click here</a></li>
           <li><a href="#contact">Request a Song</a></li>
         </ul>
@@ -983,22 +1046,22 @@ body.playing .viz i{animation-play-state:running;opacity:1}
   </div>
 </footer>
 
-<!-- ===== FIXED PLAYER ===== -->
+<!-- ===== FIXED PLAYER — with live now-playing readout ===== -->
 <div class="player">
   <div class="player-inner">
     <div class="p-art"><span>♪</span></div>
 
     <div class="p-meta">
       <div class="p-title" id="pTitle">Radio Me ♪ ♫ — Live Stream</div>
-      <div class="p-sub"><span class="dot"></span><span id="pStatus">Ready to play · 5.1 Digital Surround</span></div>
+      <div class="p-now">
+        <span class="p-now-ico">♫</span>
+        <div class="p-now-track">
+          <div class="p-now-scroll" id="nowText">Connecting to the live stream…</div>
+        </div>
+      </div>
     </div>
 
     <div class="viz"><i></i><i></i><i></i><i></i><i></i><i></i></div>
-
-    <div class="p-controls">
-      <button class="server-btn active" data-server="0">Server 1</button>
-      <button class="server-btn" data-server="1">Server 2</button>
-    </div>
 
     <div class="vol">
       <span style="font-size:.9rem">🔊</span>
@@ -1016,12 +1079,10 @@ body.playing .viz i{animation-play-state:running;opacity:1}
 
 <script>
 /* ============================================================
-   🔴 LIVE STREAM SERVERS
+   🔴 LIVE STREAM (single source)
    ============================================================ */
-const SERVERS = [
-  { label: "Server 1", url: "https://freestream.hu:8340/radiome" },
-  { label: "Server 2", url: "https://freestream.hu:8340/radiome" }
-];
+const STREAM_URL   = "https://freestream.hu:8340/radiome";
+const STREAM_BASE  = "https://freestream.hu:8340";
 
 /* ============================================================
    SHOW SCHEDULE  (24h clock)
@@ -1058,14 +1119,16 @@ const PODCASTS = [
 const audio    = document.getElementById('audio');
 const playBtn  = document.getElementById('playBtn');
 const playIcon = document.getElementById('playIcon');
-const pStatus  = document.getElementById('pStatus');
 const pTitle   = document.getElementById('pTitle');
+const nowText  = document.getElementById('nowText');
 const toastEl  = document.getElementById('toast');
 const navEl    = document.getElementById('nav');
 const navLinks = document.getElementById('navLinks');
 
-let currentServer = 0;
 let loadedUrl = "";
+let lastSong  = "";
+let isLive    = false;
+let npInterval = null;
 
 /* ============================================================
    HELPERS
@@ -1078,11 +1141,7 @@ function toast(msg, ms = 3600){
 }
 
 const toMin = t => { const [h,m] = t.split(':').map(Number); return h*60 + m; };
-
-function nowMinutes(){
-  const d = new Date();
-  return d.getHours()*60 + d.getMinutes();
-}
+const nowMinutes = () => { const d = new Date(); return d.getHours()*60 + d.getMinutes(); };
 
 function isShowLive(show){
   const n = nowMinutes();
@@ -1090,9 +1149,10 @@ function isShowLive(show){
   if (e <= s) e += 1440;
   return (n >= s && n < e) || (n + 1440 >= s && n + 1440 < e);
 }
+const currentShow = () => SHOWS.find(isShowLive) || null;
 
-function currentShow(){
-  return SHOWS.find(isShowLive) || null;
+function escapeHtml(s){
+  return String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 }
 
 /* ============================================================
@@ -1115,8 +1175,7 @@ function currentShow(){
    RENDER: SHOWS
    ============================================================ */
 (function renderShows(){
-  const grid = document.getElementById('showsGrid');
-  grid.innerHTML = SHOWS.map((s, i) => `
+  document.getElementById('showsGrid').innerHTML = SHOWS.map((s, i) => `
     <article class="show reveal" data-show="${i}">
       <span class="onair"><span class="dot"></span> On Air</span>
       <div class="show-time">🕐 ${s.from} – ${s.to}</div>
@@ -1163,10 +1222,123 @@ document.getElementById('podsGrid').addEventListener('click', e => {
 });
 
 /* ============================================================
+   NOW PLAYING — display helper
+   ============================================================ */
+function setNowPlaying(text){
+  const display = (text || '').toString().trim() || 'Live Malayalam Radio · 24×7';
+  const track   = nowText.parentElement;
+
+  nowText.classList.remove('scroll');
+  nowText.textContent = display;
+
+  requestAnimationFrame(() => {
+    if (nowText.scrollWidth > track.clientWidth + 4){
+      const sep = '\u00A0\u00A0·\u00A0\u00A0';
+      const safe = escapeHtml(display);
+      nowText.innerHTML = `<span>${safe}${sep}</span><span>${safe}${sep}</span>`;
+      nowText.classList.add('scroll');
+    }
+  });
+}
+
+function showScheduleFallback(){
+  if (lastSong){ setNowPlaying(lastSong); return; }
+  const live = currentShow();
+  setNowPlaying(live
+    ? `${live.title} · Live on Radio Me ♪ ♫`
+    : 'Radio Me ♪ ♫ · Live Malayalam Radio · 24×7');
+}
+
+/* ============================================================
+   NOW PLAYING — fetch metadata
+   Tries common Icecast/Shoutcast endpoints + any globals
+   exposed by the freestream.hu helper script.
+   ============================================================ */
+
+function parseIcecastJson(txt){
+  try{
+    const j = JSON.parse(txt);
+    const src = j?.icestats?.source;
+    if (!src) return null;
+    const s = Array.isArray(src) ? src[0] : src;
+    return s?.title || s?.yp_currently_playing || s?.songtitle || null;
+  }catch(e){ return null; }
+}
+function parseShoutcast(txt){
+  const m = txt.match(/<body>(.*?)<\/body>/i);
+  if (!m) return null;
+  const parts = m[1].split(',');
+  return parts[6]?.trim() || null;
+}
+function parseIcecastXml(txt){
+  const m = txt.match(/Current Song:\s*<\/td>\s*<td[^>]*>\s*([^<]+)/i);
+  return m ? m[1].trim() : null;
+}
+
+async function fetchMetaFromEndpoints(){
+  const endpoints = [
+    { url: `${STREAM_BASE}/status-json.xsl`,   parse: parseIcecastJson },
+    { url: `${STREAM_BASE}/currentsong?sid=1`, parse: t => (t||'').trim() || null },
+    { url: `${STREAM_BASE}/7.html`,            parse: parseShoutcast },
+    { url: `${STREAM_BASE}/status.xsl`,        parse: parseIcecastXml }
+  ];
+
+  for (const ep of endpoints){
+    try{
+      const ctrl = new AbortController();
+      const to = setTimeout(() => ctrl.abort(), 4000);
+      const res = await fetch(ep.url, { cache:'no-store', signal: ctrl.signal });
+      clearTimeout(to);
+      if (!res.ok) continue;
+      const txt = await res.text();
+      const song = ep.parse(txt);
+      if (song && song.length > 1) return song;
+    }catch(e){ /* try next */ }
+  }
+  return null;
+}
+
+/* Look for any global the freestream.hu script might expose */
+function checkFreestreamGlobals(){
+  const keys = ['nowplaying','now_playing','np','ic_nowplaying','freestream_nowplaying','ic_song'];
+  for (const k of keys){
+    const v = window[k];
+    if (typeof v === 'string' && v.length > 1) return v;
+    if (v && typeof v === 'object'){
+      const t = v.title || v.song || v.currentSong || v.nowPlaying || v.track;
+      if (typeof t === 'string' && t.length > 1) return t;
+    }
+  }
+  return null;
+}
+
+async function refreshNowPlaying(){
+  // 1) Try freestream helper's global first (may be populated asynchronously)
+  let song = checkFreestreamGlobals();
+
+  // 2) Try direct endpoints (works if your host enables CORS)
+  if (!song) song = await fetchMetaFromEndpoints();
+
+  if (song && song !== lastSong){
+    lastSong = song;
+    setNowPlaying(song);
+  } else if (!lastSong){
+    showScheduleFallback();
+  }
+}
+
+function startNowPlayingPolling(){
+  if (npInterval) clearInterval(npInterval);
+  refreshNowPlaying();
+  npInterval = setInterval(refreshNowPlaying, 12000); // every 12s
+}
+function stopNowPlayingPolling(){
+  if (npInterval){ clearInterval(npInterval); npInterval = null; }
+}
+
+/* ============================================================
    AUDIO PLAYER
    ============================================================ */
-function setStatus(text){ pStatus.textContent = text; }
-
 function setPlayingUI(playing){
   document.body.classList.toggle('playing', playing);
   playIcon.innerHTML = playing
@@ -1178,47 +1350,45 @@ function setPlayingUI(playing){
 let connectTimer = null;
 
 async function togglePlay(){
-  const src = SERVERS[currentServer].url;
-
-  if (!src){
-    toast('🎧 Add your live stream URL in the SERVERS array to go on air!');
+  if (!STREAM_URL){
+    toast('🎧 No stream URL configured.');
     return;
   }
 
   if (audio.paused){
-    if (loadedUrl !== src){
-      audio.src = src;
+    if (loadedUrl !== STREAM_URL){
+      audio.src = STREAM_URL;
       audio.load();
-      loadedUrl = src;
+      loadedUrl = STREAM_URL;
     }
-    setStatus('Connecting to ' + SERVERS[currentServer].label + '…');
+    setNowPlaying('Connecting to the live stream…');
+
     clearTimeout(connectTimer);
     connectTimer = setTimeout(() => {
-      if (audio.paused) setStatus('Still connecting… tap play again or switch server');
+      if (audio.paused) setNowPlaying('Still connecting… tap play again');
     }, 8000);
 
     try{
       await audio.play();
       clearTimeout(connectTimer);
-      setStatus('🔴 Live · ' + SERVERS[currentServer].label);
+      startNowPlayingPolling();
     }catch(err){
       clearTimeout(connectTimer);
-      setStatus('Stream unavailable — try Server 2');
-      toast('⚠️ Could not connect. Check the stream URL or try Server 2.');
+      setNowPlaying('Stream unavailable — please try again');
+      toast('⚠️ Could not connect to the live stream.');
     }
   } else {
     audio.pause();
-    setStatus('Paused · ' + SERVERS[currentServer].label);
   }
 }
 
-audio.addEventListener('playing', () => { clearTimeout(connectTimer); setPlayingUI(true); });
-audio.addEventListener('pause',   () => setPlayingUI(false));
-audio.addEventListener('waiting', () => setStatus('Buffering…'));
-audio.addEventListener('stalled', () => setStatus('Stream stalled — reconnecting…'));
+audio.addEventListener('playing', () => { clearTimeout(connectTimer); setPlayingUI(true); isLive = true; startNowPlayingPolling(); });
+audio.addEventListener('pause',   () => { setPlayingUI(false); stopNowPlayingPolling(); });
+audio.addEventListener('waiting', () => setNowPlaying('Buffering…'));
+audio.addEventListener('stalled', () => setNowPlaying('Stream stalled — reconnecting…'));
 audio.addEventListener('error',   () => {
   setPlayingUI(false);
-  setStatus('Stream offline — try another server');
+  setNowPlaying('Stream offline — tap play to retry');
 });
 
 playBtn.addEventListener('click', togglePlay);
@@ -1231,30 +1401,12 @@ document.querySelectorAll('[data-play]').forEach(el => {
   });
 });
 
-/* Server switching */
-document.querySelectorAll('.server-btn').forEach(btn => {
-  btn.addEventListener('click', () => {
-    const idx = Number(btn.dataset.server);
-    if (idx === currentServer) return;
-    currentServer = idx;
-    document.querySelectorAll('.server-btn').forEach(b => b.classList.toggle('active', b === btn));
-    loadedUrl = "";
-    const wasPlaying = !audio.paused;
-    audio.pause();
-    audio.removeAttribute('src');
-    audio.load();
-    if (wasPlaying) togglePlay();
-    else setStatus('Switched to ' + SERVERS[idx].label);
-    toast('🔁 Switched to ' + SERVERS[idx].label);
-  });
-});
-
 /* Volume */
 const vol = document.getElementById('vol');
 audio.volume = vol.value;
 vol.addEventListener('input', () => { audio.volume = vol.value; });
 
-/* Keyboard shortcut: Space */
+/* Spacebar shortcut */
 document.addEventListener('keydown', e => {
   if (e.code === 'Space' && !['INPUT','TEXTAREA'].includes(document.activeElement.tagName)){
     e.preventDefault();
@@ -1281,17 +1433,14 @@ navLinks.addEventListener('click', e => {
 document.getElementById('contactForm').addEventListener('submit', e => {
   e.preventDefault();
   const f = e.target;
-  const name = f.name.value.trim();
+  const name  = f.name.value.trim();
   const email = f.email.value.trim();
-  const msg = f.message.value.trim();
+  const msg   = f.message.value.trim();
 
-  if (!name || !email || !msg){
-    toast('⚠️ Please fill in all fields.');
-    return;
-  }
+  if (!name || !email || !msg){ toast('⚠️ Please fill in all fields.'); return; }
 
   const subject = encodeURIComponent(`Radio Me ♪ ♫ — Message from ${name}`);
-  const body = encodeURIComponent(`${msg}\n\n— ${name} (${email})`);
+  const body    = encodeURIComponent(`${msg}\n\n— ${name} (${email})`);
   window.location.href = `mailto:liveradiome@gmail.com?subject=${subject}&body=${body}`;
   toast('✅ Thanks ' + name + '! Opening your mail app…');
   f.reset();
@@ -1319,6 +1468,7 @@ document.getElementById('year').textContent = new Date().getFullYear();
 markLiveShow();
 setInterval(markLiveShow, 60000);
 setPlayingUI(false);
+showScheduleFallback();
 </script>
 </body>
 </html>
