@@ -1,160 +1,1324 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Radio Me ♪ ♫ - Modern Malayalam Radio</title>
-    <!-- Google Fonts -->
-    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,500;14..32,600;14..32,700&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet" />
-    <link href="https://fonts.googleapis.com/css2?family=Chilanka&display=swap" rel="stylesheet" />
-    <link rel="stylesheet" href="style.css" />
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Radio Me ♪ ♫ — 24×7 Malayalam Online Radio | Feel The Vibe</title>
+<meta name="description" content="Radio Me ♪ ♫ — Free 24/7 Malayalam online digital radio broadcasting from Puthanathani, Malappuram, Kerala. High quality audio in 5.1 digital surround." />
+<meta name="theme-color" content="#0a0507" />
+
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Noto+Sans+Malayalam:wght@400;500;700&display=swap" rel="stylesheet" />
+
+<style>
+/* ============================================================
+   1. TOKENS & RESET
+   ⚑ CHANGE THE 5 COLOR VALUES BELOW TO MATCH YOUR LOGO EXACTLY
+   ============================================================ */
+:root{
+  /* ▼▼▼ BRAND PALETTE ▼▼▼ */
+  --red:    #e6193c;   /* primary   */
+  --orange: #ff7a18;   /* secondary */
+  --gold:   #ffc53d;   /* accent    */
+  /* ▲▲▲ BRAND PALETTE ▲▲▲ */
+
+  --bg:#0a0507;
+  --bg-soft:#140a0d;
+  --card:rgba(255,255,255,.045);
+  --card-hi:rgba(255,255,255,.075);
+  --stroke:rgba(255,255,255,.09);
+  --stroke-hi:rgba(255,255,255,.18);
+  --txt:#f7eff1;
+  --muted:#a99ba1;
+  --grad:linear-gradient(120deg,var(--red),var(--orange) 50%,var(--gold));
+  --grad-soft:linear-gradient(120deg,rgba(230,25,60,.18),rgba(255,122,24,.18),rgba(255,197,61,.18));
+  --maxw:1260px;
+  --r:22px;
+  --shadow:0 24px 70px -20px rgba(0,0,0,.85);
+}
+
+*,*::before,*::after{box-sizing:border-box}
+html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
+body{
+  margin:0;
+  background:var(--bg);
+  color:var(--txt);
+  font-family:'Outfit','Noto Sans Malayalam',system-ui,-apple-system,sans-serif;
+  line-height:1.6;
+  overflow-x:hidden;
+  -webkit-font-smoothing:antialiased;
+  padding-bottom:104px;
+}
+img{max-width:100%;display:block}
+a{color:inherit;text-decoration:none}
+button{font-family:inherit;cursor:pointer;border:0;background:none;color:inherit}
+::selection{background:var(--orange);color:#fff}
+
+::-webkit-scrollbar{width:10px;height:10px}
+::-webkit-scrollbar-track{background:#140a0d}
+::-webkit-scrollbar-thumb{background:linear-gradient(var(--red),var(--gold));border-radius:20px}
+
+/* ============================================================
+   2. BACKGROUND FX
+   ============================================================ */
+.aurora{position:fixed;inset:0;z-index:-3;overflow:hidden;pointer-events:none}
+.aurora i{
+  position:absolute;border-radius:50%;filter:blur(110px);opacity:.38;
+  mix-blend-mode:screen;animation:float 20s ease-in-out infinite;
+}
+.aurora i:nth-child(1){width:520px;height:520px;background:var(--red);top:-160px;left:-120px}
+.aurora i:nth-child(2){width:600px;height:600px;background:var(--orange);top:20%;right:-200px;animation-delay:-6s}
+.aurora i:nth-child(3){width:460px;height:460px;background:var(--gold);bottom:-160px;left:30%;animation-delay:-12s}
+@keyframes float{
+  0%,100%{transform:translate3d(0,0,0) scale(1)}
+  33%{transform:translate3d(60px,-50px,0) scale(1.12)}
+  66%{transform:translate3d(-50px,40px,0) scale(.94)}
+}
+.grid-fx{
+  position:fixed;inset:0;z-index:-2;pointer-events:none;
+  background-image:
+    linear-gradient(rgba(255,255,255,.028) 1px,transparent 1px),
+    linear-gradient(90deg,rgba(255,255,255,.028) 1px,transparent 1px);
+  background-size:64px 64px;
+  -webkit-mask-image:radial-gradient(circle at 50% 0%,#000 0%,transparent 78%);
+  mask-image:radial-gradient(circle at 50% 0%,#000 0%,transparent 78%);
+}
+.vignette{
+  position:fixed;inset:0;z-index:-1;pointer-events:none;
+  background:radial-gradient(circle at 50% 40%,transparent 40%,rgba(0,0,0,.62) 100%);
+}
+
+/* ============================================================
+   3. LAYOUT HELPERS
+   ============================================================ */
+.wrap{max-width:var(--maxw);margin:0 auto;padding:0 clamp(16px,4vw,44px)}
+section{scroll-margin-top:100px}
+.sec{padding:clamp(70px,9vw,120px) 0}
+.eyebrow{
+  display:inline-flex;align-items:center;gap:8px;
+  font-size:.72rem;font-weight:700;letter-spacing:.22em;text-transform:uppercase;
+  color:var(--gold);margin:0 0 14px;
+}
+.eyebrow::before{content:"";width:26px;height:1px;background:linear-gradient(90deg,var(--gold),transparent)}
+.sec-title{
+  font-size:clamp(1.9rem,4.4vw,3.1rem);
+  font-weight:800;line-height:1.08;letter-spacing:-.03em;margin:0 0 14px;
+}
+.sec-title em{
+  font-style:normal;
+  background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent;
+}
+.sec-sub{color:var(--muted);max-width:620px;margin:0;font-size:1.02rem}
+.sec-head{margin-bottom:clamp(34px,5vw,58px)}
+.sec-head.center{text-align:center;margin-inline:auto}
+.sec-head.center .sec-sub{margin-inline:auto}
+
+/* ============================================================
+   4. BUTTONS
+   ============================================================ */
+.btn{
+  display:inline-flex;align-items:center;justify-content:center;gap:10px;
+  padding:14px 26px;border-radius:100px;font-weight:600;font-size:.94rem;
+  letter-spacing:.01em;transition:.32s cubic-bezier(.4,0,.2,1);white-space:nowrap;
+}
+.btn-primary{
+  background:var(--grad);color:#fff;position:relative;overflow:hidden;
+  box-shadow:0 12px 40px -12px rgba(255,122,24,.85);
+}
+.btn-primary::after{
+  content:"";position:absolute;inset:0;background:linear-gradient(120deg,transparent 20%,rgba(255,255,255,.5),transparent 80%);
+  transform:translateX(-130%);transition:.7s;
+}
+.btn-primary:hover::after{transform:translateX(130%)}
+.btn-primary:hover{transform:translateY(-3px);box-shadow:0 20px 50px -12px rgba(230,25,60,.85)}
+.btn-ghost{
+  background:var(--card);border:1px solid var(--stroke);color:var(--txt);
+  backdrop-filter:blur(14px);
+}
+.btn-ghost:hover{background:var(--card-hi);border-color:var(--stroke-hi);transform:translateY(-3px)}
+.btn-sm{padding:10px 18px;font-size:.85rem}
+
+/* ============================================================
+   5. NAVBAR
+   ============================================================ */
+.nav{
+  position:fixed;top:0;left:0;right:0;z-index:200;
+  display:flex;align-items:center;justify-content:space-between;gap:18px;
+  padding:14px clamp(16px,4vw,44px);
+  transition:.35s;
+  border-bottom:1px solid transparent;
+}
+.nav.scrolled{
+  background:rgba(10,5,7,.8);
+  backdrop-filter:blur(20px) saturate(160%);
+  border-bottom-color:var(--stroke);
+}
+.logo{display:flex;align-items:center;gap:11px;font-weight:800;font-size:1.12rem;letter-spacing:-.02em}
+
+/* ---- logo mark now holds your real header logo ---- */
+.logo-mark{
+  width:42px;height:42px;border-radius:13px;display:grid;place-items:center;
+  background:var(--grad);
+  box-shadow:0 8px 26px -8px rgba(255,122,24,.95), 0 0 0 1px rgba(255,255,255,.1);
+  position:relative;overflow:hidden;flex:0 0 auto;
+}
+.logo-mark svg{width:20px;height:20px;fill:#fff;position:relative;z-index:1}
+.logo-mark img{
+  position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:2;
+}
+
+.logo b{
+  background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent;
+}
+.logo small{display:block;font-size:.6rem;letter-spacing:.3em;color:var(--muted);font-weight:500;text-transform:uppercase}
+
+.nav-links{display:flex;align-items:center;gap:4px}
+.nav-links a{
+  position:relative;padding:9px 15px;border-radius:100px;font-size:.9rem;font-weight:500;
+  color:var(--muted);transition:.25s;
+}
+.nav-links a:hover{color:#fff;background:var(--card)}
+.nav-links a::after{
+  content:"";position:absolute;left:50%;bottom:4px;width:0;height:2px;border-radius:2px;
+  background:var(--grad);transform:translateX(-50%);transition:.3s;
+}
+.nav-links a:hover::after{width:22px}
+
+.nav-cta{display:flex;align-items:center;gap:12px}
+.live-pill{
+  display:inline-flex;align-items:center;gap:8px;padding:7px 15px;border-radius:100px;
+  background:rgba(230,25,60,.14);border:1px solid rgba(230,25,60,.42);
+  font-size:.72rem;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:#ffb08a;
+}
+.dot{width:7px;height:7px;border-radius:50%;background:var(--red);box-shadow:0 0 0 0 rgba(230,25,60,.7);animation:ping 1.8s infinite}
+@keyframes ping{
+  0%{box-shadow:0 0 0 0 rgba(230,25,60,.65)}
+  70%{box-shadow:0 0 0 12px rgba(230,25,60,0)}
+  100%{box-shadow:0 0 0 0 rgba(230,25,60,0)}
+}
+.burger{display:none;width:42px;height:42px;border-radius:12px;background:var(--card);border:1px solid var(--stroke);place-items:center}
+.burger span{display:block;width:17px;height:2px;background:#fff;border-radius:2px;position:relative;transition:.3s}
+.burger span::before,.burger span::after{content:"";position:absolute;left:0;width:17px;height:2px;background:#fff;border-radius:2px;transition:.3s}
+.burger span::before{top:-6px}
+.burger span::after{top:6px}
+
+/* ============================================================
+   6. HERO
+   ============================================================ */
+.hero{
+  min-height:100svh;display:grid;grid-template-columns:1.05fr .95fr;
+  align-items:center;gap:clamp(30px,5vw,70px);
+  max-width:var(--maxw);margin:0 auto;
+  padding:clamp(120px,15vh,170px) clamp(16px,4vw,44px) 70px;
+}
+.hero-badge{
+  display:inline-flex;align-items:center;gap:10px;padding:8px 16px;border-radius:100px;
+  background:var(--card);border:1px solid var(--stroke);backdrop-filter:blur(14px);
+  font-size:.78rem;font-weight:600;color:#e8d8dc;margin-bottom:26px;
+}
+.hero h1{
+  font-size:clamp(2.4rem,6.4vw,4.5rem);
+  line-height:1.02;letter-spacing:-.045em;font-weight:800;margin:0 0 8px;
+}
+.hero h1 .grad{
+  background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent;
+}
+.hero .mal{
+  font-family:'Noto Sans Malayalam',sans-serif;
+  font-size:clamp(1.05rem,2.4vw,1.5rem);
+  color:#e2cfd5;margin:6px 0 20px;font-weight:500;
+}
+.hero p.lead{color:var(--muted);font-size:1.05rem;max-width:520px;margin:0 0 34px}
+.hero p.lead strong{color:#fff}
+.hero-actions{display:flex;flex-wrap:wrap;gap:14px;margin-bottom:42px}
+
+.hero-stats{display:flex;flex-wrap:wrap;gap:clamp(20px,4vw,46px)}
+.stat b{
+  display:block;font-size:clamp(1.3rem,2.6vw,1.75rem);font-weight:800;letter-spacing:-.03em;
+  background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent;
+}
+.stat span{font-size:.74rem;letter-spacing:.16em;text-transform:uppercase;color:var(--muted);font-weight:600}
+
+.hero-visual{position:relative;display:grid;place-items:center;min-height:340px}
+.disc{
+  width:min(400px,74vw);aspect-ratio:1;border-radius:50%;position:relative;
+  background:
+    repeating-radial-gradient(circle at 50% 50%, rgba(255,255,255,.055) 0 1px, transparent 1px 7px),
+    conic-gradient(from 0deg, #e6193c, #ff7a18, #ffc53d, #ff7a18, #e6193c);
+  box-shadow:0 0 110px -10px rgba(255,122,24,.55), inset 0 0 70px rgba(0,0,0,.6);
+  animation:spin 14s linear infinite;
+  animation-play-state:paused;
+  display:grid;place-items:center;
+}
+body.playing .disc{animation-play-state:running}
+@keyframes spin{to{transform:rotate(360deg)}}
+.disc::before{
+  content:"";position:absolute;inset:12%;border-radius:50%;
+  background:radial-gradient(circle at 50% 50%, rgba(10,5,7,.96) 0 30%, rgba(10,5,7,.55) 60%, transparent 72%);
+}
+
+/* ---- disc centre now holds your main logo ---- */
+.disc-label{
+  position:relative;z-index:2;width:36%;aspect-ratio:1;border-radius:50%;
+  display:grid;place-items:center;overflow:hidden;
+  background:radial-gradient(circle at 34% 28%, #3a2430, #0d0609);
+  box-shadow:inset 0 0 34px rgba(0,0,0,.9), 0 0 0 1px rgba(255,255,255,.1);
+}
+.disc-label img{
+  position:absolute;inset:0;width:100%;height:100%;object-fit:cover;border-radius:50%;z-index:2;
+}
+.disc-fallback{position:relative;z-index:1;font-size:clamp(1.6rem,4vw,2.4rem);color:#fff}
+
+.ring{
+  position:absolute;border-radius:50%;border:1px solid rgba(255,197,61,.14);
+  animation:ripple 4.5s ease-out infinite;
+}
+.ring:nth-of-type(1){width:78%;aspect-ratio:1;animation-delay:0s}
+.ring:nth-of-type(2){width:92%;aspect-ratio:1;animation-delay:1.5s}
+.ring:nth-of-type(3){width:106%;aspect-ratio:1;animation-delay:3s}
+@keyframes ripple{
+  0%{transform:scale(.85);opacity:0}
+  35%{opacity:.6}
+  100%{transform:scale(1.15);opacity:0}
+}
+.float-chip{
+  position:absolute;display:flex;align-items:center;gap:9px;
+  padding:10px 15px;border-radius:100px;font-size:.76rem;font-weight:600;
+  background:rgba(26,12,16,.78);border:1px solid var(--stroke);
+  backdrop-filter:blur(16px);box-shadow:var(--shadow);white-space:nowrap;
+  animation:bob 6s ease-in-out infinite;
+}
+.float-chip.a{top:8%;left:-2%}
+.float-chip.b{bottom:12%;right:-3%;animation-delay:-3s}
+@keyframes bob{0%,100%{transform:translateY(0)}50%{transform:translateY(-14px)}}
+
+/* ============================================================
+   7. TICKER
+   ============================================================ */
+.ticker{
+  border-block:1px solid var(--stroke);
+  background:linear-gradient(90deg,rgba(230,25,60,.08),rgba(255,122,24,.08),rgba(255,197,61,.08));
+  overflow:hidden;padding:15px 0;white-space:nowrap;
+}
+.ticker-track{display:inline-flex;gap:44px;animation:marquee 34s linear infinite;padding-left:44px}
+.ticker-track span{font-size:.82rem;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:#c9b5ba}
+@keyframes marquee{to{transform:translateX(-50%)}}
+
+/* ============================================================
+   8. ABOUT / MOOD CARDS
+   ============================================================ */
+.about-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;margin-top:20px}
+.mood{
+  position:relative;padding:32px 28px;border-radius:var(--r);
+  background:var(--card);border:1px solid var(--stroke);
+  backdrop-filter:blur(18px);overflow:hidden;transition:.4s cubic-bezier(.4,0,.2,1);
+}
+.mood::before{
+  content:"";position:absolute;inset:0;opacity:0;transition:.4s;
+  background:var(--grad-soft);
+}
+.mood:hover{transform:translateY(-8px);border-color:var(--stroke-hi);box-shadow:var(--shadow)}
+.mood:hover::before{opacity:1}
+.mood > *{position:relative;z-index:2}
+.mood-ico{
+  width:54px;height:54px;border-radius:16px;display:grid;place-items:center;font-size:1.5rem;
+  background:var(--grad);margin-bottom:20px;box-shadow:0 12px 34px -12px rgba(255,122,24,.95);
+}
+.mood h3{margin:0 0 8px;font-size:1.18rem;font-weight:700;letter-spacing:-.02em}
+.mood p{margin:0;color:var(--muted);font-size:.94rem}
+
+.about-copy{
+  display:grid;grid-template-columns:1fr 1fr;gap:clamp(24px,5vw,64px);align-items:center;
+}
+.about-copy p{color:var(--muted);margin:0 0 18px}
+.about-copy strong{color:#fff;font-weight:600}
+.feature-list{list-style:none;padding:0;margin:24px 0 0;display:grid;gap:12px}
+.feature-list li{display:flex;gap:12px;align-items:flex-start;font-size:.94rem;color:#dccbd1}
+.feature-list li::before{
+  content:"♪";flex:0 0 auto;width:24px;height:24px;border-radius:8px;display:grid;place-items:center;
+  background:var(--grad);color:#fff;font-size:.72rem;margin-top:1px;
+}
+
+/* ============================================================
+   9. SCHEDULE
+   ============================================================ */
+.shows{display:grid;grid-template-columns:repeat(auto-fit,minmax(290px,1fr));gap:18px}
+.show{
+  position:relative;padding:26px;border-radius:var(--r);
+  background:var(--card);border:1px solid var(--stroke);
+  backdrop-filter:blur(18px);transition:.4s cubic-bezier(.4,0,.2,1);overflow:hidden;
+}
+.show::after{
+  content:"";position:absolute;left:0;top:0;bottom:0;width:3px;
+  background:var(--grad);transform:scaleY(0);transform-origin:top;transition:.45s;
+}
+.show:hover{transform:translateY(-6px);background:var(--card-hi);border-color:var(--stroke-hi)}
+.show:hover::after{transform:scaleY(1)}
+.show-time{
+  display:inline-flex;align-items:center;gap:7px;font-size:.74rem;font-weight:700;
+  letter-spacing:.14em;text-transform:uppercase;color:var(--gold);margin-bottom:14px;
+}
+.show h3{margin:0 0 6px;font-size:1.2rem;font-weight:700;letter-spacing:-.02em}
+.show p{margin:0;color:var(--muted);font-size:.92rem}
+.show-foot{margin-top:18px;display:flex;gap:7px;flex-wrap:wrap}
+.tag{
+  font-size:.68rem;font-weight:600;letter-spacing:.08em;text-transform:uppercase;
+  padding:5px 11px;border-radius:100px;background:rgba(255,255,255,.06);
+  border:1px solid var(--stroke);color:#c2b0b6;
+}
+.onair{
+  position:absolute;top:20px;right:20px;display:none;align-items:center;gap:6px;
+  font-size:.62rem;font-weight:800;letter-spacing:.18em;color:#ffb08a;
+  padding:5px 11px;border-radius:100px;background:rgba(230,25,60,.16);
+  border:1px solid rgba(230,25,60,.45);
+}
+.show.live{border-color:rgba(230,25,60,.42);background:rgba(230,25,60,.06)}
+.show.live .onair{display:inline-flex}
+.show.live::after{transform:scaleY(1)}
+
+/* ============================================================
+   10. CATEGORIES
+   ============================================================ */
+.cats{display:flex;flex-wrap:wrap;gap:12px;justify-content:center;margin-top:10px}
+.cat{
+  display:inline-flex;align-items:center;gap:9px;padding:12px 22px;border-radius:100px;
+  background:var(--card);border:1px solid var(--stroke);font-size:.9rem;font-weight:600;
+  backdrop-filter:blur(14px);transition:.3s;color:#ded0d5;
+}
+.cat:hover{background:var(--grad);color:#fff;border-color:transparent;transform:translateY(-4px) scale(1.03);box-shadow:0 16px 40px -14px rgba(255,122,24,.95)}
+.cat i{font-style:normal;font-size:1.05rem}
+
+/* ============================================================
+   11. PODCASTS
+   ============================================================ */
+.pods{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:18px}
+.pod{
+  display:flex;gap:16px;padding:22px;border-radius:var(--r);
+  background:var(--card);border:1px solid var(--stroke);backdrop-filter:blur(18px);
+  transition:.4s cubic-bezier(.4,0,.2,1);cursor:pointer;position:relative;overflow:hidden;
+}
+.pod:hover{transform:translateY(-6px);background:var(--card-hi);border-color:var(--stroke-hi);box-shadow:var(--shadow)}
+.pod-art{
+  flex:0 0 auto;width:62px;height:62px;border-radius:16px;display:grid;place-items:center;
+  background:var(--grad);font-size:1.35rem;box-shadow:0 10px 30px -12px rgba(230,25,60,.95);
+  transition:.4s;
+}
+.pod:hover .pod-art{transform:rotate(-8deg) scale(1.06)}
+.pod-body{min-width:0}
+.pod-ep{
+  font-size:.66rem;font-weight:800;letter-spacing:.18em;text-transform:uppercase;
+  color:var(--gold);display:block;margin-bottom:7px;
+}
+.pod h3{
+  margin:0 0 8px;font-size:.98rem;font-weight:600;line-height:1.45;letter-spacing:-.01em;
+  font-family:'Noto Sans Malayalam','Outfit',sans-serif;
+  display:-webkit-box;-webkit-line-clamp:3;line-clamp:3;-webkit-box-orient:vertical;overflow:hidden;
+}
+.pod time{font-size:.76rem;color:var(--muted);letter-spacing:.05em}
+
+/* ============================================================
+   12. TESTIMONIALS
+   ============================================================ */
+.reviews{display:grid;grid-template-columns:repeat(auto-fit,minmax(290px,1fr));gap:18px}
+.review{
+  padding:30px 28px;border-radius:var(--r);background:var(--card);
+  border:1px solid var(--stroke);backdrop-filter:blur(18px);transition:.4s;
+  display:flex;flex-direction:column;gap:18px;
+}
+.review:hover{transform:translateY(-6px);border-color:var(--stroke-hi);background:var(--card-hi)}
+.quote-mark{font-size:2.6rem;line-height:.6;background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent;font-weight:800}
+.review p{margin:0;color:#d9c9ce;font-size:.95rem;font-family:'Noto Sans Malayalam','Outfit',sans-serif}
+.reviewer{display:flex;align-items:center;gap:13px;margin-top:auto}
+.avatar{
+  width:44px;height:44px;border-radius:50%;display:grid;place-items:center;font-weight:700;
+  background:var(--grad);color:#fff;font-size:.95rem;flex:0 0 auto;
+}
+.reviewer b{display:block;font-size:.92rem;font-weight:700}
+.reviewer span{font-size:.76rem;color:var(--muted)}
+.review.cta-card{
+  background:var(--grad-soft);border:1px dashed var(--stroke-hi);
+  align-items:flex-start;justify-content:center;
+}
+.review.cta-card h3{margin:0;font-size:1.15rem;font-weight:700}
+.review.cta-card p{color:var(--muted)}
+
+/* ============================================================
+   13. CONTACT
+   ============================================================ */
+.contact-grid{display:grid;grid-template-columns:1fr 1.1fr;gap:clamp(24px,5vw,56px);align-items:start}
+.info-card{
+  padding:32px;border-radius:var(--r);background:var(--card);border:1px solid var(--stroke);
+  backdrop-filter:blur(18px);
+}
+.info-list{list-style:none;padding:0;margin:24px 0 0;display:grid;gap:18px}
+.info-list li{display:flex;gap:15px;align-items:flex-start}
+.info-ico{
+  flex:0 0 auto;width:44px;height:44px;border-radius:14px;display:grid;place-items:center;
+  background:var(--card-hi);border:1px solid var(--stroke);font-size:1.1rem;
+}
+.info-list b{display:block;font-size:.72rem;letter-spacing:.16em;text-transform:uppercase;color:var(--muted);font-weight:700;margin-bottom:3px}
+.info-list a,.info-list span{font-size:.95rem;color:#f0e2e6;transition:.25s;word-break:break-word}
+.info-list a:hover{color:var(--gold)}
+
+form{display:grid;gap:16px}
+.field{position:relative}
+.field label{
+  display:block;font-size:.72rem;font-weight:700;letter-spacing:.16em;text-transform:uppercase;
+  color:var(--muted);margin-bottom:8px;
+}
+.field input,.field textarea{
+  width:100%;padding:15px 18px;border-radius:15px;font-family:inherit;font-size:.95rem;
+  background:rgba(255,255,255,.04);border:1px solid var(--stroke);color:var(--txt);
+  transition:.3s;outline:none;resize:vertical;
+}
+.field input::placeholder,.field textarea::placeholder{color:#7a6a70}
+.field input:focus,.field textarea:focus{
+  border-color:rgba(255,122,24,.7);background:rgba(255,122,24,.07);
+  box-shadow:0 0 0 4px rgba(255,122,24,.16);
+}
+.form-row{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+
+/* ============================================================
+   14. FOOTER
+   ============================================================ */
+footer{
+  border-top:1px solid var(--stroke);margin-top:40px;padding:56px 0 40px;
+  background:linear-gradient(180deg,transparent,rgba(255,122,24,.06));
+}
+.foot-grid{display:grid;grid-template-columns:1.4fr 1fr 1fr;gap:38px;margin-bottom:44px}
+.foot-grid p{color:var(--muted);font-size:.92rem;max-width:340px;margin:16px 0 0}
+.foot-col h4{
+  font-size:.74rem;letter-spacing:.2em;text-transform:uppercase;color:#fff;
+  margin:0 0 18px;font-weight:700;
+}
+.foot-col ul{list-style:none;padding:0;margin:0;display:grid;gap:11px}
+.foot-col a{color:var(--muted);font-size:.92rem;transition:.25s}
+.foot-col a:hover{color:var(--gold);padding-left:5px}
+.socials{display:flex;gap:10px;margin-top:22px}
+.socials a{
+  width:42px;height:42px;border-radius:13px;display:grid;place-items:center;
+  background:var(--card);border:1px solid var(--stroke);transition:.3s;font-size:.95rem;
+}
+.socials a:hover{background:var(--grad);border-color:transparent;transform:translateY(-4px)}
+.foot-bottom{
+  border-top:1px solid var(--stroke);padding-top:26px;
+  display:flex;flex-wrap:wrap;justify-content:space-between;gap:12px;
+  font-size:.82rem;color:var(--muted);
+}
+.foot-bottom a{color:#d6c6cb}
+.foot-bottom a:hover{color:var(--gold)}
+
+/* ============================================================
+   15. FIXED PLAYER
+   ============================================================ */
+.player{
+  position:fixed;left:0;right:0;bottom:0;z-index:300;
+  background:rgba(14,7,10,.85);
+  backdrop-filter:blur(26px) saturate(170%);
+  border-top:1px solid var(--stroke);
+  padding:12px clamp(14px,3vw,32px);
+}
+.player-inner{
+  max-width:var(--maxw);margin:0 auto;
+  display:flex;align-items:center;gap:clamp(12px,2.4vw,24px);
+}
+.p-art{
+  flex:0 0 auto;width:56px;height:56px;border-radius:16px;display:grid;place-items:center;
+  background:conic-gradient(from 0deg,#e6193c,#ff7a18,#ffc53d,#ff7a18,#e6193c);
+  box-shadow:0 8px 26px -10px rgba(255,122,24,.95);position:relative;overflow:hidden;font-size:1.2rem;
+}
+body.playing .p-art{animation:spin 6s linear infinite}
+.p-art::after{content:"";position:absolute;inset:26%;border-radius:50%;background:#0a0507}
+.p-art span{position:relative;z-index:2;filter:drop-shadow(0 0 6px rgba(0,0,0,.9))}
+.p-meta{min-width:0;flex:1 1 auto}
+.p-title{
+  font-size:.92rem;font-weight:700;letter-spacing:-.01em;white-space:nowrap;
+  overflow:hidden;text-overflow:ellipsis;
+}
+.p-sub{
+  font-size:.74rem;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
+  display:flex;align-items:center;gap:7px;margin-top:2px;
+}
+.p-sub .dot{width:5px;height:5px}
+.viz{display:flex;align-items:flex-end;gap:3px;height:30px;flex:0 0 auto}
+.viz i{
+  width:3px;border-radius:3px;background:var(--grad);height:20%;
+  animation:eq 1s ease-in-out infinite;animation-play-state:paused;opacity:.45;
+}
+body.playing .viz i{animation-play-state:running;opacity:1}
+.viz i:nth-child(1){animation-delay:0s}
+.viz i:nth-child(2){animation-delay:.15s}
+.viz i:nth-child(3){animation-delay:.3s}
+.viz i:nth-child(4){animation-delay:.45s}
+.viz i:nth-child(5){animation-delay:.6s}
+.viz i:nth-child(6){animation-delay:.75s}
+@keyframes eq{0%,100%{height:16%}50%{height:100%}}
+
+.p-controls{display:flex;align-items:center;gap:10px;flex:0 0 auto}
+.server-btn{
+  padding:8px 14px;border-radius:100px;font-size:.74rem;font-weight:600;
+  background:var(--card);border:1px solid var(--stroke);color:var(--muted);transition:.3s;
+}
+.server-btn:hover{color:#fff;border-color:var(--stroke-hi)}
+.server-btn.active{background:var(--grad);color:#fff;border-color:transparent}
+.play-btn{
+  width:54px;height:54px;border-radius:50%;display:grid;place-items:center;
+  background:var(--grad);color:#fff;font-size:1.1rem;
+  box-shadow:0 12px 34px -12px rgba(255,122,24,.95);transition:.3s;
+  flex:0 0 auto;
+}
+.play-btn:hover{transform:scale(1.08)}
+.play-btn:active{transform:scale(.95)}
+.play-btn svg{width:20px;height:20px;fill:#fff}
+
+.vol{display:flex;align-items:center;gap:9px;flex:0 0 auto}
+.vol input[type=range]{
+  -webkit-appearance:none;appearance:none;width:88px;height:4px;border-radius:4px;
+  background:rgba(255,255,255,.15);outline:none;cursor:pointer;
+}
+.vol input[type=range]::-webkit-slider-thumb{
+  -webkit-appearance:none;width:14px;height:14px;border-radius:50%;
+  background:#fff;box-shadow:0 0 0 4px rgba(255,122,24,.4);cursor:pointer;
+}
+.vol input[type=range]::-moz-range-thumb{
+  width:14px;height:14px;border:0;border-radius:50%;background:#fff;cursor:pointer;
+}
+
+/* ============================================================
+   16. TOAST
+   ============================================================ */
+.toast{
+  position:fixed;left:50%;bottom:130px;transform:translate(-50%,26px);
+  padding:14px 24px;border-radius:100px;font-size:.88rem;font-weight:600;
+  background:rgba(24,12,16,.96);border:1px solid var(--stroke-hi);
+  backdrop-filter:blur(18px);box-shadow:var(--shadow);
+  opacity:0;pointer-events:none;transition:.4s cubic-bezier(.4,0,.2,1);z-index:400;
+  max-width:90vw;text-align:center;
+}
+.toast.show{opacity:1;transform:translate(-50%,0)}
+
+/* ============================================================
+   17. REVEAL ANIMATION
+   ============================================================ */
+.reveal{opacity:0;transform:translateY(34px);transition:opacity .85s cubic-bezier(.4,0,.2,1),transform .85s cubic-bezier(.4,0,.2,1)}
+.reveal.in{opacity:1;transform:none}
+
+/* ============================================================
+   18. RESPONSIVE
+   ============================================================ */
+@media(max-width:1024px){
+  .hero{grid-template-columns:1fr;text-align:center;padding-top:130px}
+  .hero p.lead{margin-inline:auto}
+  .hero-actions,.hero-stats{justify-content:center}
+  .hero-visual{order:-1;min-height:290px}
+  .about-copy{grid-template-columns:1fr}
+  .foot-grid{grid-template-columns:1fr 1fr}
+  .contact-grid{grid-template-columns:1fr}
+  .float-chip.a{left:2%}
+  .float-chip.b{right:2%}
+}
+@media(max-width:860px){
+  .nav-links{
+    position:fixed;top:70px;left:16px;right:16px;flex-direction:column;align-items:stretch;
+    gap:4px;padding:14px;border-radius:22px;
+    background:rgba(18,9,12,.96);border:1px solid var(--stroke);
+    backdrop-filter:blur(24px);box-shadow:var(--shadow);
+    opacity:0;visibility:hidden;transform:translateY(-14px);transition:.32s;
+  }
+  .nav-links.open{opacity:1;visibility:visible;transform:none}
+  .nav-links a{padding:13px 16px;border-radius:14px;font-size:.95rem}
+  .nav-links a::after{display:none}
+  .burger{display:grid}
+  .nav-cta .live-pill{display:none}
+  .about-grid{grid-template-columns:1fr}
+  .form-row{grid-template-columns:1fr}
+  .vol{display:none}
+  .viz{display:none}
+  .foot-grid{grid-template-columns:1fr}
+  .hero-stats{gap:22px}
+}
+@media(max-width:560px){
+  body{padding-bottom:96px}
+  .p-art{width:46px;height:46px;border-radius:13px}
+  .play-btn{width:48px;height:48px}
+  .server-btn{padding:7px 11px;font-size:.68rem}
+  .float-chip{font-size:.68rem;padding:8px 12px}
+  .ticker-track{gap:30px}
+}
+@media(prefers-reduced-motion:reduce){
+  *,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}
+  html{scroll-behavior:auto}
+  .reveal{opacity:1;transform:none}
+}
+</style>
 </head>
 <body>
 
-    <!-- ===== HEADER ===== -->
-    <header class="site-header">
-        <div class="container header-inner">
-            <!-- Logo as image -->
-            <div class="site-title">
-                <img src="https://blogger.googleusercontent.com/img/a/AVvXsEjwo9fPoph5mleAENDxe-NSmQ8TAxFB-n1bZFATsnrzfHp6IexLXoL1D7bNrJd7s8CdzHzoWCXGncE_ke80Uo9RuqLHVPDDoxDr96j0YssTz9Krv0scz9AHB9rqwnEYlX6bkS9cIPnKdWgP_p7LscZnydf7Rb2XPa88oz0cYiuHw9PPzaFx7ZtxhZGb=w200-h199"
-                     alt="Radio Me Logo"
-                     class="logo-img" />
+<!-- ===== BACKGROUND FX ===== -->
+<div class="aurora"><i></i><i></i><i></i></div>
+<div class="grid-fx"></div>
+<div class="vignette"></div>
+
+<!-- ===== NAVBAR ===== -->
+<header class="nav" id="nav">
+  <a href="#home" class="logo">
+    <span class="logo-mark">
+      <svg viewBox="0 0 24 24"><path d="M3 10v4h3l4 4V6L6 10H3zm13.5 2a4.5 4.5 0 0 0-2.5-4v8a4.5 4.5 0 0 0 2.5-4zM14 3.2v2.1a6.8 6.8 0 0 1 0 13.4v2.1a8.9 8.9 0 0 0 0-17.6z"/></svg>
+      <img src="https://lh3.googleusercontent.com/blogger_img_proxy/AEn0k_v1eU-KpqFdoUycMGykZA5wYVHlKYLbT4yCfMCO8gNgRyy7AER4dIu5HMsMt_AlLEU1_EEQmZ-mmYLtMTN4tzcM1iA"
+           alt="Radio Me" referrerpolicy="no-referrer" onerror="this.remove()" />
+    </span>
+    <span>
+      <b>Radio Me ♪ ♫</b>
+      <small>Feel the vibe</small>
+    </span>
+  </a>
+
+  <nav class="nav-links" id="navLinks">
+    <a href="#home">Home</a>
+    <a href="#about">About</a>
+    <a href="#shows">Shows</a>
+    <a href="#podcasts">Podcasts</a>
+    <a href="#reviews">Listeners</a>
+    <a href="#contact">Contact</a>
+  </nav>
+
+  <div class="nav-cta">
+    <span class="live-pill"><span class="dot"></span> Live 24×7</span>
+    <button class="btn btn-primary btn-sm" data-play>▶ Listen Live</button>
+    <button class="burger" id="burger" aria-label="Menu"><span></span></button>
+  </div>
+</header>
+
+<main>
+<!-- ===== HERO ===== -->
+<section class="hero" id="home">
+  <div class="hero-copy">
+    <span class="hero-badge"><span class="dot"></span> Broadcasting from Puthanathani, Kerala</span>
+    <h1>Your World.<br><span class="grad">Your Sound.</span></h1>
+    <p class="mal">♪♫ ഇഷ്ടംപോലെ പാട്ട് ♫♪</p>
+    <p class="lead">
+      Tune in 24/7 to <strong>Radio Me ♪ ♫</strong> — the free online digital Malayalam radio
+      station delivering a revolutionary high-quality audio experience in stunning
+      <strong>5.1 digital surround</strong>. No tuning. No limits. Anywhere on Earth.
+    </p>
+
+    <div class="hero-actions">
+      <button class="btn btn-primary" data-play>▶ Start Listening Free</button>
+      <a href="#shows" class="btn btn-ghost">Explore Shows</a>
+    </div>
+
+    <div class="hero-stats">
+      <div class="stat"><b>24/7</b><span>Non-stop</span></div>
+      <div class="stat"><b>5.1</b><span>Surround</span></div>
+      <div class="stat"><b>∞</b><span>Requests</span></div>
+      <div class="stat"><b>Global</b><span>Reach</span></div>
+    </div>
+  </div>
+
+  <div class="hero-visual">
+    <div class="ring"></div><div class="ring"></div><div class="ring"></div>
+    <div class="disc">
+      <div class="disc-label">
+        <span class="disc-fallback">♪</span>
+        <img src="https://blogger.googleusercontent.com/img/a/AVvXsEjwo9fPoph5mleAENDxe-NSmQ8TAxFB-n1bZFATsnrzfHp6IexLXoL1D7bNrJd7s8CdzHzoWCXGncE_ke80Uo9RuqLHVPDDoxDr96j0YssTz9Krv0scz9AHB9rqwnEYlX6bkS9cIPnKdWgP_p7LscZnydf7Rb2XPa88oz0cYiuHw9PPzaFx7ZtxhZGb=w200-h199"
+             alt="Radio Me" referrerpolicy="no-referrer" onerror="this.remove()" />
+      </div>
+    </div>
+    <div class="float-chip a">🎧 5.1 Digital Surround</div>
+    <div class="float-chip b">🌍 Listening Worldwide</div>
+  </div>
+</section>
+
+<!-- ===== TICKER ===== -->
+<div class="ticker">
+  <div class="ticker-track" id="ticker"></div>
+</div>
+
+<!-- ===== ABOUT ===== -->
+<section class="sec" id="about">
+  <div class="wrap">
+    <div class="sec-head center reveal">
+      <span class="eyebrow">About Radio Me</span>
+      <h2 class="sec-title">Music that <em>heals, lifts &amp; connects</em></h2>
+      <p class="sec-sub">
+        A narrow-band network service built for instant, tuning-free access to your favourite
+        songs — from any corner of the globe. Our playlist is shaped by listener requests,
+        all day, every day.
+      </p>
+    </div>
+
+    <div class="about-grid">
+      <article class="mood reveal">
+        <div class="mood-ico">🧘</div>
+        <h3>SIT</h3>
+        <p>Wherever you are, take a breath. Sit peacefully and happily with a merry mood and a clear mind.</p>
+      </article>
+      <article class="mood reveal">
+        <div class="mood-ico">☕</div>
+        <h3>RELAX</h3>
+        <p>Sipping your favourite coffee while mystic music strengthens and refreshes you. This is the experience we create.</p>
+      </article>
+      <article class="mood reveal">
+        <div class="mood-ico">🎶</div>
+        <h3>ENJOY MUSIC</h3>
+        <p>Your daily dose of musical wellness. Combat stress and refresh your mind with the rhythms you love.</p>
+      </article>
+    </div>
+
+    <div class="about-copy" style="margin-top:70px">
+      <div class="reveal">
+        <span class="eyebrow">The Station</span>
+        <h2 class="sec-title">Built for the <em>Malayali listener</em></h2>
+        <p>
+          Radio Me ♪ ♫ is a free 24/7 online radio station dedicated to delivering a
+          high-quality audio experience through an innovative 5.1 digital surrounding system.
+        </p>
+        <p>
+          Broadcasting from <strong>Puthanathani, Malappuram District, Kerala</strong>, we carry a
+          huge collection of hit songs — mostly streamed on <strong>listener request</strong>.
+        </p>
+        <ul class="feature-list">
+          <li>Instant playback — no tuning, no buffering drama</li>
+          <li>Dual streaming servers for uninterrupted listening</li>
+          <li>Curated day-parts from morning vibe to dark tones</li>
+          <li>Podcasts on culture, tech, health &amp; everyday life</li>
+        </ul>
+      </div>
+      <div class="reveal" style="display:grid;place-items:center">
+        <div class="hero-visual" style="min-height:auto">
+          <div class="ring"></div><div class="ring"></div>
+          <div class="disc" style="width:min(300px,66vw)">
+            <div class="disc-label">
+              <span class="disc-fallback">♫</span>
+              <img src="https://blogger.googleusercontent.com/img/a/AVvXsEjwo9fPoph5mleAENDxe-NSmQ8TAxFB-n1bZFATsnrzfHp6IexLXoL1D7bNrJd7s8CdzHzoWCXGncE_ke80Uo9RuqLHVPDDoxDr96j0YssTz9Krv0scz9AHB9rqwnEYlX6bkS9cIPnKdWgP_p7LscZnydf7Rb2XPa88oz0cYiuHw9PPzaFx7ZtxhZGb=w200-h199"
+                   alt="Radio Me" referrerpolicy="no-referrer" loading="lazy" onerror="this.remove()" />
             </div>
-            <nav class="main-nav">
-                <a href="index.html" class="active">Home</a>
-                <a href="podcast.html">Podcast</a>
-                <a href="about.html">About</a>
-                <a href="https://open.spotify.com/show/3QVPgIPIkiJvi1J3tj4E2U" target="_blank">Spotify</a>
-            </nav>
+          </div>
         </div>
-    </header>
+      </div>
+    </div>
+  </div>
+</section>
 
-    <!-- ===== MAIN ===== -->
-    <main class="container">
+<!-- ===== SHOWS / SCHEDULE ===== -->
+<section class="sec" id="shows" style="padding-top:0">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <span class="eyebrow">Daily Schedule</span>
+      <h2 class="sec-title">Shows that shape <em>your day</em></h2>
+      <p class="sec-sub">Six curated day-parts, each with its own mood and energy. The live one lights up automatically.</p>
+    </div>
+    <div class="shows" id="showsGrid"></div>
+  </div>
+</section>
 
-        <!-- HERO -->
-        <section class="hero">
-            <h1>
-                ♪♫ <span class="highlight malayalam">ഇഷ്ടംപോലെ പാട്ട്</span> ♫♪<br/>
-                <span style="font-size:0.6em;">Feel The Vibe</span>
-            </h1>
-            <p>
-                Your World, Your Sound, in Stunning 5.1 Surround.<br/>
-                Tune in 24/7 to Radio Me — the free online digital Malayalam radio station.
-            </p>
-            <div class="hero-buttons">
-                <a class="btn-primary" href="https://freestream.hu:9500/radiome">▶ Listen Live</a>
-                <a class="btn-outline" href="https://open.spotify.com/show/3QVPgIPIkiJvi1J3tj4E2U" target="_blank">🎙️ Podcast on Spotify</a>
-            </div>
-        </section>
+<!-- ===== CATEGORIES ===== -->
+<section class="sec" style="padding-top:0">
+  <div class="wrap">
+    <div class="sec-head center reveal">
+      <span class="eyebrow">Categories</span>
+      <h2 class="sec-title">Something for <em>every mood</em></h2>
+    </div>
+    <div class="cats reveal" id="cats"></div>
+  </div>
+</section>
 
-        <!-- BLOG POSTS (Fetched Live from Blogger) -->
-        <section style="margin: 40px 0;">
-            <h2 class="section-title">📝 Latest Blog Updates</h2>
-            <p class="section-subtitle">Stay tuned with our latest articles and announcements.</p>
-            <div id="blog-posts-container">
-                <p style="color: #70707e;">Loading latest posts...</p>
-            </div>
-        </section>
+<!-- ===== PODCASTS ===== -->
+<section class="sec" id="podcasts" style="padding-top:0">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <span class="eyebrow">🎙️ Podcast</span>
+      <h2 class="sec-title">Stories, ideas &amp; <em>real conversations</em></h2>
+      <p class="sec-sub">Fresh episodes on culture, technology, health and everyday Malayali life.</p>
+    </div>
+    <div class="pods" id="podsGrid"></div>
+  </div>
+</section>
 
-        <!-- SCHEDULE -->
-        <section style="margin: 40px 0;">
-            <h2 class="section-title">📅 Daily Schedule</h2>
-            <p class="section-subtitle">Tune in at the right time for the perfect vibe.</p>
-            <div class="schedule-grid">
-                <div class="schedule-item"><div class="time">6:00 AM – 9:00 AM</div><div class="name">🌅 Morning Vibe</div></div>
-                <div class="schedule-item"><div class="time">9:00 AM – 10:00 AM</div><div class="name">🍹 Cocktail Ambiance</div></div>
-                <div class="schedule-item"><div class="time">10:00 AM – 12:00 PM</div><div class="name">🎵 Music Treasure</div></div>
-                <div class="schedule-item"><div class="time">12:00 PM – 4:00 PM</div><div class="name">✨ Newgen Ketchup</div></div>
-                <div class="schedule-item"><div class="time">6:30 PM – 8:00 PM</div><div class="name">🎶 Music Ultra</div></div>
-                <div class="schedule-item"><div class="time">8:30 PM – 12:00 AM</div><div class="name">🌙 Dark Tones</div></div>
-            </div>
-        </section>
-
-        <!-- SPOTIFY PODCAST -->
-        <section style="margin: 40px 0;">
-            <h2 class="section-title">🎙️ Latest Podcast</h2>
-            <p class="section-subtitle">Listen to the latest episodes of Radio Me Podcast.</p>
-            <div class="glass-card" style="padding:16px;">
-                <iframe
-                    src="https://open.spotify.com/embed/show/3QVPgIPIkiJvi1J3tj4E2U"
-                    width="100%"
-                    height="352"
-                    frameborder="0"
-                    allowtransparency="true"
-                    allow="encrypted-media"
-                    loading="lazy"
-                    style="border-radius:16px;"
-                ></iframe>
-            </div>
-        </section>
-
-    </main>
-
-    <!-- ===== FOOTER ===== -->
-    <footer class="site-footer">
-        <div class="container">
-            <p>
-                © 2026 <a href="index.html">Radio Me Malayalam</a> &nbsp;|&nbsp;
-                All Rights Reserved &nbsp;|&nbsp;
-                Created with ❤️ by JALworLD Media
-            </p>
-            <p style="margin-top:8px;font-size:0.8rem;">
-                📍 Puthanathani, Malappuram DT, Kerala &nbsp;·&nbsp;
-                📧 <a href="mailto:liveradiome@gmail.com">liveradiome@gmail.com</a> &nbsp;·&nbsp;
-                🌐 <a href="https://fb.com/RadiomeOnline" target="_blank">Facebook</a>
-            </p>
+<!-- ===== REVIEWS ===== -->
+<section class="sec" id="reviews" style="padding-top:0">
+  <div class="wrap">
+    <div class="sec-head center reveal">
+      <span class="eyebrow">Listeners Community</span>
+      <h2 class="sec-title">Few words from <em>our top listeners</em></h2>
+    </div>
+    <div class="reviews">
+      <article class="review reveal">
+        <span class="quote-mark">“</span>
+        <p>എവിടെയും ഇപ്പോഴും ഏത് സമയത്തും പാട്ടുകൾ ആസ്വദിക്കാൻ അവസരം ഉണ്ടാക്കി തന്ന മലയാളികളുടെ സ്വന്തം റേഡിയോ ചാനൽ 'റേഡിയോ മി' ക്ക് ഒരായിരം അഭിനന്ദനങ്ങൾ.</p>
+        <div class="reviewer">
+          <span class="avatar">JJ</span>
+          <div><b>Jamin Jamal</b><span>UX Designer</span></div>
         </div>
-    </footer>
+      </article>
 
-    <!-- ===== JAVASCRIPT TO FETCH BLOGGER POSTS ===== -->
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            const container = document.getElementById('blog-posts-container');
-            const feedUrl = 'https://radiomelive.blogspot.com/feeds/posts/default?alt=json';
+      <article class="review reveal">
+        <span class="quote-mark">“</span>
+        <p>'റേഡിയോ മി' യുടെ സജീവമായ സംഗീതപരിപാടികൾ സദാ പ്രേക്ഷകർക്ക് ആസ്വാദനമാർഗ്ഗങ്ങൾ നൽകുന്നു. ഓരോ പാട്ടും പുതുമയിലും സന്തോഷത്തിലാണ് നിറഞ്ഞിരിക്കുന്നതും, എപ്പോഴും പുതുതായി രചിക്കപ്പെട്ടവയെ കണ്ടെത്താൻ കഴിയുന്നു.</p>
+        <div class="reviewer">
+          <span class="avatar">SV</span>
+          <div><b>Sajna V</b><span>Regular Listener</span></div>
+        </div>
+      </article>
 
-            fetch(feedUrl)
-                .then(response => {
-                    if (!response.ok) throw new Error('Network error');
-                    return response.json();
-                })
-                .then(data => {
-                    const entries = data.feed.entry || [];
-                    if (entries.length === 0) {
-                        container.innerHTML = '<p style="color: #70707e;">No posts yet. Check back soon!</p>';
-                        return;
-                    }
-                    let html = '<div class="blog-grid">';
-                    entries.slice(0, 6).forEach(entry => {
-                        const title = entry.title.$t;
-                        const link = entry.link.find(l => l.rel === 'alternate').href;
-                        const published = new Date(entry.published.$t).toLocaleDateString('en-US', {
-                            year: 'numeric', month: 'short', day: 'numeric'
-                        });
-                        const content = entry.summary ? entry.summary.$t.substring(0, 120) + '...' : 'Click to read more.';
-                        html += `
-                            <div class="glass-card post-card">
-                                <h3><a href="${link}" target="_blank">${title}</a></h3>
-                                <div class="post-meta">${published}</div>
-                                <p>${content}</p>
-                                <a href="${link}" target="_blank" class="btn-outline" style="padding:6px 20px;font-size:0.8rem;">Read More →</a>
-                            </div>
-                        `;
-                    });
-                    html += '</div>';
-                    container.innerHTML = html;
-                })
-                .catch(error => {
-                    console.error('Error fetching posts:', error);
-                    container.innerHTML = `
-                        <div class="glass-card" style="text-align:center;padding:20px;">
-                            <p style="color:#a0a0b0;">⚠️ Could not load live posts. </p>
-                            <p style="color:#70707e;font-size:0.9rem;">Visit our <a href="https://radiomelive.blogspot.com" target="_blank">Blogger site</a> for the latest updates.</p>
-                        </div>
-                    `;
-                });
-        });
-    </script>
+      <article class="review reveal">
+        <span class="quote-mark">“</span>
+        <p>സംഗീത പ്രേമികൾക്ക് എന്നും ഒരു നല്ല കൂട്ടായി റേഡിയോ മി ഉണ്ടാകട്ടെ എന്ന് ആശംസിക്കുന്നു.</p>
+        <div class="reviewer">
+          <span class="avatar">AJ</span>
+          <div><b>Abdul Jaleel</b><span>Designer</span></div>
+        </div>
+      </article>
 
+      <article class="review cta-card reveal">
+        <h3>Your Name</h3>
+        <p>Add your words here… Click the contact button below and get in touch with the Radio Me ♪ ♫ family!</p>
+        <a href="#contact" class="btn btn-primary btn-sm">Contact Us →</a>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- ===== CONTACT ===== -->
+<section class="sec" id="contact" style="padding-top:0">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <span class="eyebrow">Contact Info</span>
+      <h2 class="sec-title">Feel free to <em>be in touch</em></h2>
+      <p class="sec-sub">Song requests, feedback, collaborations or advertising — we'd love to hear from you.</p>
+    </div>
+
+    <div class="contact-grid">
+      <div class="info-card reveal">
+        <h3 style="margin:0;font-size:1.15rem;font-weight:700">Contact List</h3>
+        <ul class="info-list">
+          <li>
+            <span class="info-ico">📘</span>
+            <div><b>Facebook</b><a href="https://fb.com/RadiomeOnline" target="_blank" rel="noopener">fb.com/RadiomeOnline</a></div>
+          </li>
+          <li>
+            <span class="info-ico">✉️</span>
+            <div><b>Email</b><a href="mailto:liveradiome@gmail.com">liveradiome@gmail.com</a></div>
+          </li>
+          <li>
+            <span class="info-ico">🌐</span>
+            <div><b>Website</b><a href="https://radiomelive.blogspot.com" target="_blank" rel="noopener">radiomelive.blogspot.com</a></div>
+          </li>
+          <li>
+            <span class="info-ico">📍</span>
+            <div><b>Studio</b><span>Puthanathani, Malappuram DT, Kerala, India</span></div>
+          </li>
+        </ul>
+      </div>
+
+      <form id="contactForm" class="reveal" novalidate>
+        <div class="form-row">
+          <div class="field">
+            <label for="cf-name">Your Name</label>
+            <input id="cf-name" name="name" type="text" placeholder="Enter your name" required />
+          </div>
+          <div class="field">
+            <label for="cf-email">Email</label>
+            <input id="cf-email" name="email" type="email" placeholder="you@example.com" required />
+          </div>
+        </div>
+        <div class="field">
+          <label for="cf-msg">Message / Song Request</label>
+          <textarea id="cf-msg" name="message" rows="5" placeholder="Write your message or request a song…" required></textarea>
+        </div>
+        <button class="btn btn-primary" type="submit" style="justify-self:start">Send Message ✦</button>
+      </form>
+    </div>
+  </div>
+</section>
+</main>
+
+<!-- ===== FOOTER ===== -->
+<footer>
+  <div class="wrap">
+    <div class="foot-grid">
+      <div>
+        <a href="#home" class="logo">
+          <span class="logo-mark">
+            <svg viewBox="0 0 24 24"><path d="M3 10v4h3l4 4V6L6 10H3zm13.5 2a4.5 4.5 0 0 0-2.5-4v8a4.5 4.5 0 0 0 2.5-4zM14 3.2v2.1a6.8 6.8 0 0 1 0 13.4v2.1a8.9 8.9 0 0 0 0-17.6z"/></svg>
+            <img src="https://lh3.googleusercontent.com/blogger_img_proxy/AEn0k_v1eU-KpqFdoUycMGykZA5wYVHlKYLbT4yCfMCO8gNgRyy7AER4dIu5HMsMt_AlLEU1_EEQmZ-mmYLtMTN4tzcM1iA"
+                 alt="Radio Me" referrerpolicy="no-referrer" loading="lazy" onerror="this.remove()" />
+          </span>
+          <span><b>Radio Me ♪ ♫</b><small>Feel the vibe</small></span>
+        </a>
+        <p>Free 24/7 online Malayalam radio, streaming in 5.1 digital surround from Puthanathani, Malappuram, Kerala.</p>
+        <div class="socials">
+          <a href="https://fb.com/RadiomeOnline" target="_blank" rel="noopener" aria-label="Facebook">f</a>
+          <a href="mailto:liveradiome@gmail.com" aria-label="Email">✉</a>
+          <a href="https://radiomelive.blogspot.com" target="_blank" rel="noopener" aria-label="Website">🌐</a>
+        </div>
+      </div>
+
+      <div class="foot-col">
+        <h4>Explore</h4>
+        <ul>
+          <li><a href="#about">About Us</a></li>
+          <li><a href="#shows">Show Schedule</a></li>
+          <li><a href="#podcasts">Podcasts</a></li>
+          <li><a href="#reviews">Listeners</a></li>
+        </ul>
+      </div>
+
+      <div class="foot-col">
+        <h4>Listen</h4>
+        <ul>
+          <li><a href="#" data-play>▶ Live Server 1</a></li>
+          <li><a href="#" data-play>▶ Live Server 2</a></li>
+          <li><a href="https://radiomelive.blogspot.com" target="_blank" rel="noopener">Not working? Click here</a></li>
+          <li><a href="#contact">Request a Song</a></li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="foot-bottom">
+      <span>© <span id="year">2026</span> Radio Me Malayalam | All Rights Reserved.</span>
+      <span>Made with ♥ from <a href="https://radiomelive.blogspot.com" target="_blank" rel="noopener">JALworLD Media</a></span>
+    </div>
+  </div>
+</footer>
+
+<!-- ===== FIXED PLAYER ===== -->
+<div class="player">
+  <div class="player-inner">
+    <div class="p-art"><span>♪</span></div>
+
+    <div class="p-meta">
+      <div class="p-title" id="pTitle">Radio Me ♪ ♫ — Live Stream</div>
+      <div class="p-sub"><span class="dot"></span><span id="pStatus">Ready to play · 5.1 Digital Surround</span></div>
+    </div>
+
+    <div class="viz"><i></i><i></i><i></i><i></i><i></i><i></i></div>
+
+    <div class="p-controls">
+      <button class="server-btn active" data-server="0">Server 1</button>
+      <button class="server-btn" data-server="1">Server 2</button>
+    </div>
+
+    <div class="vol">
+      <span style="font-size:.9rem">🔊</span>
+      <input type="range" id="vol" min="0" max="1" step="0.01" value="0.85" aria-label="Volume" />
+    </div>
+
+    <button class="play-btn" id="playBtn" aria-label="Play">
+      <svg id="playIcon" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+    </button>
+  </div>
+</div>
+
+<audio id="audio" preload="none" crossorigin="anonymous"></audio>
+<div class="toast" id="toast"></div>
+
+<script>
+/* ============================================================
+   🔴 LIVE STREAM SERVERS
+   ============================================================ */
+const SERVERS = [
+  { label: "Server 1", url: "https://freestream.hu:8340/radiome" },
+  { label: "Server 2", url: "https://freestream.hu:8340/radiome" }
+];
+
+/* ============================================================
+   SHOW SCHEDULE  (24h clock)
+   ============================================================ */
+const SHOWS = [
+  { title:"Morning Vibe",     desc:"Let's start with morning pleasure — soft melodies to open your day.", from:"06:00", to:"09:00", tags:["Melody","Fresh","Devotional"] },
+  { title:"Cocktail Ambiance",desc:"Enjoy with mixed chords — a smooth blend of genres.",                from:"09:00", to:"10:00", tags:["Mix","Chill"] },
+  { title:"Music Treasure",   desc:"Refresh your mind with timeless treasures from the archive.",        from:"10:00", to:"12:00", tags:["Classics","Hits"] },
+  { title:"Newgen Ketchup",   desc:"Peace in melody — the newest tracks, fresh off the charts.",         from:"12:00", to:"16:00", tags:["New","Trending"] },
+  { title:"Music Ultra",      desc:"Modulate your emotions with high-energy anthems.",                  from:"18:30", to:"20:00", tags:["Dance","Rock","Energy"] },
+  { title:"Dark Tones",       desc:"Sleepy mode — slow, deep and dreamy sounds for the night.",         from:"20:30", to:"00:00", tags:["Slow","Ambient"] }
+];
+
+const CATEGORIES = [
+  { i:"🎵", n:"Popular Music" }, { i:"💃", n:"Dance" }, { i:"🤠", n:"Country" },
+  { i:"🪘", n:"Folk Music" },    { i:"🎸", n:"Rock" },  { i:"🎙️", n:"Talk" },
+  { i:"🎻", n:"Classic" }
+];
+
+const PODCASTS = [
+  { ep:"EP#09", title:"മികച്ചൊരു 'റോഡ് സംസ്കാരം' നമുക്കുണ്ടോ? റോഡിലെ ക്ഷമ, ജീവന്റെ കവചം! 🛣️🚗", date:"December 26, 2025" },
+  { ep:"EP#08", title:"സുന്ദരമായ AI ചിത്രങ്ങൾ കാണാൻ നല്ലതാണ്, പക്ഷേ ഈ ചതിക്കുഴികൾ അറിയാമോ? 📸", date:"December 26, 2025" },
+  { ep:"EP#07", title:"AI വിപ്ലവമോ അതോ തൊഴിൽ ഭീഷണിയോ? 🤖🏢", date:"December 25, 2025" },
+  { ep:"EP#06", title:"കുട്ടികളുടെ സോഷ്യൽ മീഡിയ ഉപയോഗം എങ്ങനെ നിയന്ത്രിക്കാം? 💡", date:"December 24, 2025" },
+  { ep:"EP#05", title:"പോക്കറ്റ് കാലിയാവാതെ വിദേശയാത്ര പോകാം! ✈️🌍", date:"December 24, 2025" },
+  { ep:"EP#04", title:"ഇരുട്ടിലെ സ്മാർട്ട്ഫോൺ ഉപയോഗം; കണ്ണുകളെ കാത്തുസൂക്ഷിക്കാം! 📱👀", date:"December 19, 2025" },
+  { ep:"EP#03", title:"പകൽ ഉറക്കവും മറവിരോഗ സാധ്യതയും: പ്രായമായവർ ശ്രദ്ധിക്കേണ്ട കാര്യങ്ങൾ 🧠💤", date:"December 16, 2025" },
+  { ep:"EP#02", title:"കുട്ടികളുടെ സമഗ്ര വളർച്ചക്ക് വീട്ടിലെ അന്തരീക്ഷം എങ്ങനെ രൂപപ്പെടുത്താം? 🌱🏠", date:"December 04, 2025" }
+];
+
+/* ============================================================
+   DOM REFS
+   ============================================================ */
+const audio    = document.getElementById('audio');
+const playBtn  = document.getElementById('playBtn');
+const playIcon = document.getElementById('playIcon');
+const pStatus  = document.getElementById('pStatus');
+const pTitle   = document.getElementById('pTitle');
+const toastEl  = document.getElementById('toast');
+const navEl    = document.getElementById('nav');
+const navLinks = document.getElementById('navLinks');
+
+let currentServer = 0;
+let loadedUrl = "";
+
+/* ============================================================
+   HELPERS
+   ============================================================ */
+function toast(msg, ms = 3600){
+  toastEl.textContent = msg;
+  toastEl.classList.add('show');
+  clearTimeout(toastEl._t);
+  toastEl._t = setTimeout(() => toastEl.classList.remove('show'), ms);
+}
+
+const toMin = t => { const [h,m] = t.split(':').map(Number); return h*60 + m; };
+
+function nowMinutes(){
+  const d = new Date();
+  return d.getHours()*60 + d.getMinutes();
+}
+
+function isShowLive(show){
+  const n = nowMinutes();
+  let s = toMin(show.from), e = toMin(show.to);
+  if (e <= s) e += 1440;
+  return (n >= s && n < e) || (n + 1440 >= s && n + 1440 < e);
+}
+
+function currentShow(){
+  return SHOWS.find(isShowLive) || null;
+}
+
+/* ============================================================
+   RENDER: TICKER
+   ============================================================ */
+(function renderTicker(){
+  const items = [
+    "♪♫ ഇഷ്ടംപോലെ പാട്ട് ♫♪",
+    "24×7 Live Malayalam Radio",
+    "5.1 Digital Surround Sound",
+    "Listener Request Based",
+    "Broadcasting from Puthanathani, Kerala",
+    "Feel The Vibe ♪ ♫"
+  ];
+  const html = items.map(t => `<span>${t}</span>`).join('');
+  document.getElementById('ticker').innerHTML = html + html;
+})();
+
+/* ============================================================
+   RENDER: SHOWS
+   ============================================================ */
+(function renderShows(){
+  const grid = document.getElementById('showsGrid');
+  grid.innerHTML = SHOWS.map((s, i) => `
+    <article class="show reveal" data-show="${i}">
+      <span class="onair"><span class="dot"></span> On Air</span>
+      <div class="show-time">🕐 ${s.from} – ${s.to}</div>
+      <h3>${s.title}</h3>
+      <p>${s.desc}</p>
+      <div class="show-foot">${s.tags.map(t => `<span class="tag">${t}</span>`).join('')}</div>
+    </article>
+  `).join('');
+})();
+
+function markLiveShow(){
+  const live = currentShow();
+  document.querySelectorAll('.show').forEach(el => {
+    const idx = Number(el.dataset.show);
+    el.classList.toggle('live', !!live && SHOWS[idx].title === live.title);
+  });
+  if (live) pTitle.textContent = `${live.title} · Radio Me ♪ ♫`;
+}
+
+/* ============================================================
+   RENDER: CATEGORIES
+   ============================================================ */
+document.getElementById('cats').innerHTML =
+  CATEGORIES.map(c => `<button class="cat"><i>${c.i}</i>${c.n}</button>`).join('');
+
+/* ============================================================
+   RENDER: PODCASTS
+   ============================================================ */
+document.getElementById('podsGrid').innerHTML = PODCASTS.map(p => `
+  <article class="pod reveal" data-pod="${p.ep}">
+    <div class="pod-art">🎧</div>
+    <div class="pod-body">
+      <span class="pod-ep">${p.ep}</span>
+      <h3>${p.title}</h3>
+      <time>${p.date}</time>
+    </div>
+  </article>
+`).join('');
+
+document.getElementById('podsGrid').addEventListener('click', e => {
+  const card = e.target.closest('.pod');
+  if (!card) return;
+  toast('🎙️ ' + card.dataset.pod + ' — podcast player coming soon!');
+});
+
+/* ============================================================
+   AUDIO PLAYER
+   ============================================================ */
+function setStatus(text){ pStatus.textContent = text; }
+
+function setPlayingUI(playing){
+  document.body.classList.toggle('playing', playing);
+  playIcon.innerHTML = playing
+    ? '<path d="M6 5h4v14H6zM14 5h4v14h-4z"/>'
+    : '<path d="M8 5v14l11-7z"/>';
+  playBtn.setAttribute('aria-label', playing ? 'Pause' : 'Play');
+}
+
+let connectTimer = null;
+
+async function togglePlay(){
+  const src = SERVERS[currentServer].url;
+
+  if (!src){
+    toast('🎧 Add your live stream URL in the SERVERS array to go on air!');
+    return;
+  }
+
+  if (audio.paused){
+    if (loadedUrl !== src){
+      audio.src = src;
+      audio.load();
+      loadedUrl = src;
+    }
+    setStatus('Connecting to ' + SERVERS[currentServer].label + '…');
+    clearTimeout(connectTimer);
+    connectTimer = setTimeout(() => {
+      if (audio.paused) setStatus('Still connecting… tap play again or switch server');
+    }, 8000);
+
+    try{
+      await audio.play();
+      clearTimeout(connectTimer);
+      setStatus('🔴 Live · ' + SERVERS[currentServer].label);
+    }catch(err){
+      clearTimeout(connectTimer);
+      setStatus('Stream unavailable — try Server 2');
+      toast('⚠️ Could not connect. Check the stream URL or try Server 2.');
+    }
+  } else {
+    audio.pause();
+    setStatus('Paused · ' + SERVERS[currentServer].label);
+  }
+}
+
+audio.addEventListener('playing', () => { clearTimeout(connectTimer); setPlayingUI(true); });
+audio.addEventListener('pause',   () => setPlayingUI(false));
+audio.addEventListener('waiting', () => setStatus('Buffering…'));
+audio.addEventListener('stalled', () => setStatus('Stream stalled — reconnecting…'));
+audio.addEventListener('error',   () => {
+  setPlayingUI(false);
+  setStatus('Stream offline — try another server');
+});
+
+playBtn.addEventListener('click', togglePlay);
+
+document.querySelectorAll('[data-play]').forEach(el => {
+  el.addEventListener('click', e => {
+    e.preventDefault();
+    if (audio.paused) togglePlay();
+    else document.querySelector('.player').scrollIntoView({ behavior:'smooth', block:'nearest' });
+  });
+});
+
+/* Server switching */
+document.querySelectorAll('.server-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    const idx = Number(btn.dataset.server);
+    if (idx === currentServer) return;
+    currentServer = idx;
+    document.querySelectorAll('.server-btn').forEach(b => b.classList.toggle('active', b === btn));
+    loadedUrl = "";
+    const wasPlaying = !audio.paused;
+    audio.pause();
+    audio.removeAttribute('src');
+    audio.load();
+    if (wasPlaying) togglePlay();
+    else setStatus('Switched to ' + SERVERS[idx].label);
+    toast('🔁 Switched to ' + SERVERS[idx].label);
+  });
+});
+
+/* Volume */
+const vol = document.getElementById('vol');
+audio.volume = vol.value;
+vol.addEventListener('input', () => { audio.volume = vol.value; });
+
+/* Keyboard shortcut: Space */
+document.addEventListener('keydown', e => {
+  if (e.code === 'Space' && !['INPUT','TEXTAREA'].includes(document.activeElement.tagName)){
+    e.preventDefault();
+    togglePlay();
+  }
+});
+
+/* ============================================================
+   NAV
+   ============================================================ */
+window.addEventListener('scroll', () => {
+  navEl.classList.toggle('scrolled', window.scrollY > 24);
+}, { passive:true });
+
+const burger = document.getElementById('burger');
+burger.addEventListener('click', () => navLinks.classList.toggle('open'));
+navLinks.addEventListener('click', e => {
+  if (e.target.tagName === 'A') navLinks.classList.remove('open');
+});
+
+/* ============================================================
+   CONTACT FORM
+   ============================================================ */
+document.getElementById('contactForm').addEventListener('submit', e => {
+  e.preventDefault();
+  const f = e.target;
+  const name = f.name.value.trim();
+  const email = f.email.value.trim();
+  const msg = f.message.value.trim();
+
+  if (!name || !email || !msg){
+    toast('⚠️ Please fill in all fields.');
+    return;
+  }
+
+  const subject = encodeURIComponent(`Radio Me ♪ ♫ — Message from ${name}`);
+  const body = encodeURIComponent(`${msg}\n\n— ${name} (${email})`);
+  window.location.href = `mailto:liveradiome@gmail.com?subject=${subject}&body=${body}`;
+  toast('✅ Thanks ' + name + '! Opening your mail app…');
+  f.reset();
+});
+
+/* ============================================================
+   SCROLL REVEAL
+   ============================================================ */
+const io = new IntersectionObserver(entries => {
+  entries.forEach((entry, i) => {
+    if (entry.isIntersecting){
+      entry.target.style.transitionDelay = (i % 4) * 90 + 'ms';
+      entry.target.classList.add('in');
+      io.unobserve(entry.target);
+    }
+  });
+}, { threshold: 0.12, rootMargin: '0px 0px -60px 0px' });
+
+document.querySelectorAll('.reveal').forEach(el => io.observe(el));
+
+/* ============================================================
+   INIT
+   ============================================================ */
+document.getElementById('year').textContent = new Date().getFullYear();
+markLiveShow();
+setInterval(markLiveShow, 60000);
+setPlayingUI(false);
+</script>
 </body>
 </html>
