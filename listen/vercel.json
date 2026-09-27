@@ -1,8 +1,0 @@
-{
-  "rewrites": [
-    {
-      "source": "/listen",
-      "destination": "https://freestream.hu:9500/radiome"
-    }
-  ]
-}
