@@ -1,0 +1,696 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#0a0a0f">
+<meta name="description" content="Mediavision LIVE TV – watch the 24x7 live stream in HD.">
+<title>Mediavision LIVE TV</title>
+
+<!-- Fonts -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Anek+Malayalam:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+<!-- Player -->
+<link href="https://cdn.jsdelivr.net/npm/plyr@3.6.2/dist/plyr.css" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/plyr@3.6.12/dist/plyr.min.js" defer></script>
+<script src="https://cdn.jsdelivr.net/npm/hls.js@1.1.4/dist/hls.min.js" defer></script>
+
+<style>
+  /* ============ Design tokens ============ */
+  :root{
+    --brand:#cf2e2e;
+    --brand-dark:#a82424;
+    --accent:#e657ff;
+    --bg:#0a0a0f;
+    --surface:#14141c;
+    --surface-2:#1c1c27;
+    --text:#f4f4f7;
+    --muted:#9a9aab;
+    --line:rgba(255,255,255,.08);
+    --radius:18px;
+    --maxw:1120px;
+
+    /* Plyr theming */
+    --plyr-color-main:#cf2e2e;
+    --plyr-video-control-color:#fff;
+    --plyr-video-control-color-hover:#fff;
+    --plyr-video-control-background-hover:rgba(207,46,46,.9);
+    --plyr-control-radius:8px;
+    --plyr-font-family:'Anek Malayalam', system-ui, sans-serif;
+  }
+
+  *,*::before,*::after{box-sizing:border-box}
+
+  html,body{margin:0;padding:0}
+
+  body{
+    min-height:100dvh;
+    display:flex;
+    flex-direction:column;
+    font-family:'Anek Malayalam', system-ui, -apple-system, "Segoe UI", sans-serif;
+    color:var(--text);
+    background:
+      radial-gradient(1100px 520px at 50% -12%, #1d1d2e 0%, transparent 62%),
+      var(--bg);
+    -webkit-font-smoothing:antialiased;
+    overflow-x:hidden;
+  }
+
+  img{max-width:100%;display:block}
+
+  /* ============ Loading screen ============ */
+  .loader{
+    position:fixed;
+    inset:0;
+    z-index:9999;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content:center;
+    gap:26px;
+    background:radial-gradient(700px 420px at 50% 40%, #16161f 0%, #050509 70%);
+    transition:opacity .6s ease, visibility .6s ease;
+  }
+  .loader.is-hidden{opacity:0;visibility:hidden;pointer-events:none}
+
+  .loader__logo{
+    width:clamp(96px, 22vw, 150px);
+    height:auto;
+    border-radius:16px;
+    filter:drop-shadow(0 8px 28px rgba(230,87,255,.25));
+    animation:logoPulse 2.4s ease-in-out infinite;
+  }
+  @keyframes logoPulse{
+    0%,100%{transform:scale(1);opacity:.92}
+    50%{transform:scale(1.05);opacity:1}
+  }
+
+  .loader__word{
+    display:flex;
+    flex-wrap:wrap;
+    justify-content:center;
+    gap:.08em;
+    font-size:clamp(1.35rem, 5.4vw, 2.35rem);
+    font-weight:700;
+    letter-spacing:.14em;
+    line-height:1;
+    padding:0 12px;
+    text-align:center;
+  }
+  .loader__word span{
+    display:inline-block;
+    color:var(--accent);
+    animation:blurText 1.8s ease-in-out infinite;
+    animation-delay:calc(var(--i) * .09s);
+    will-change:filter, opacity;
+  }
+  @keyframes blurText{
+    0%,100%{filter:blur(0);opacity:.32;color:var(--accent)}
+    50%    {filter:blur(4px);opacity:1;color:#fff}
+  }
+
+  .loader__bar{
+    width:min(240px, 62vw);
+    height:3px;
+    border-radius:99px;
+    background:rgba(255,255,255,.1);
+    overflow:hidden;
+  }
+  .loader__bar i{
+    display:block;
+    width:38%;
+    height:100%;
+    border-radius:99px;
+    background:linear-gradient(90deg, var(--accent), var(--brand));
+    animation:barSlide 1.4s cubic-bezier(.65,.05,.36,1) infinite;
+  }
+  @keyframes barSlide{
+    0%  {transform:translateX(-110%)}
+    100%{transform:translateX(300%)}
+  }
+
+  .loader__hint{
+    margin:0;
+    font-size:.82rem;
+    letter-spacing:.08em;
+    text-transform:uppercase;
+    color:var(--muted);
+  }
+
+  /* ============ Header ============ */
+  .site-header{
+    width:100%;
+    max-width:var(--maxw);
+    margin:0 auto;
+    padding:16px 20px 6px;
+    display:flex;
+    align-items:center;
+    gap:14px;
+  }
+  .brand-logo{
+    height:clamp(38px, 8vw, 52px);
+    width:auto;
+    border-radius:12px;
+    flex-shrink:0;
+  }
+  .brand-text{min-width:0}
+  .brand-text h1{
+    margin:0;
+    font-size:clamp(.98rem, 3.4vw, 1.22rem);
+    font-weight:700;
+    letter-spacing:.02em;
+    white-space:nowrap;
+    overflow:hidden;
+    text-overflow:ellipsis;
+  }
+  .brand-text p{
+    margin:2px 0 0;
+    font-size:.74rem;
+    letter-spacing:.06em;
+    text-transform:uppercase;
+    color:var(--muted);
+  }
+  .live-badge{
+    margin-left:auto;
+    display:inline-flex;
+    align-items:center;
+    gap:7px;
+    padding:7px 13px;
+    border-radius:99px;
+    font-size:.7rem;
+    font-weight:700;
+    letter-spacing:.14em;
+    color:#fff;
+    background:rgba(207,46,46,.14);
+    border:1px solid rgba(207,46,46,.45);
+    flex-shrink:0;
+  }
+  .live-badge i{
+    width:7px;height:7px;border-radius:50%;
+    background:var(--brand);
+    box-shadow:0 0 0 0 rgba(207,46,46,.7);
+    animation:pulseDot 1.8s infinite;
+  }
+  @keyframes pulseDot{
+    0%  {box-shadow:0 0 0 0 rgba(207,46,46,.7)}
+    70% {box-shadow:0 0 0 9px rgba(207,46,46,0)}
+    100%{box-shadow:0 0 0 0 rgba(207,46,46,0)}
+  }
+
+  /* ============ Main / player ============ */
+  main{
+    width:100%;
+    max-width:var(--maxw);
+    margin:0 auto;
+    padding:12px 20px 0;
+    flex:1;
+  }
+
+  .player-shell{
+    position:relative;
+    width:100%;
+    aspect-ratio:16 / 9;
+    background:#000;
+    border-radius:var(--radius);
+    overflow:hidden;
+    border:1px solid var(--line);
+    box-shadow:0 24px 60px rgba(0,0,0,.65), 0 0 0 1px rgba(255,255,255,.02) inset;
+  }
+  .player-shell .plyr{
+    position:absolute;
+    inset:0;
+    width:100%;
+    height:100%;
+    border-radius:inherit;
+  }
+  .player-shell .plyr__video-wrapper,
+  .player-shell .plyr video{
+    width:100%;
+    height:100%;
+    border-radius:inherit;
+  }
+  .player-shell .plyr video{object-fit:contain;background:#000}
+
+  /* channel bug */
+  .watermark{
+    position:absolute;
+    top:12px;
+    right:12px;
+    width:clamp(48px, 8vw, 84px);
+    height:auto;
+    opacity:.55;
+    pointer-events:none;
+    user-select:none;
+    z-index:5;
+    border-radius:8px;
+    filter:drop-shadow(0 2px 8px rgba(0,0,0,.7));
+    transition:opacity .3s ease;
+  }
+  .player-shell:hover .watermark{opacity:.22}
+
+  /* ============ Error / tap-to-play overlay ============ */
+  .overlay{
+    position:absolute;
+    inset:0;
+    z-index:20;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content:center;
+    gap:12px;
+    padding:26px;
+    text-align:center;
+    background:rgba(6,6,11,.88);
+    -webkit-backdrop-filter:blur(8px);
+    backdrop-filter:blur(8px);
+  }
+  .overlay[hidden]{display:none}
+  .overlay h2{
+    margin:0;
+    font-size:clamp(1rem, 3.6vw, 1.3rem);
+    font-weight:700;
+  }
+  .overlay p{
+    margin:0;
+    max-width:44ch;
+    font-size:.86rem;
+    line-height:1.55;
+    color:var(--muted);
+  }
+
+  /* ============ Buttons ============ */
+  .btn{
+    display:inline-flex;
+    align-items:center;
+    justify-content:center;
+    gap:8px;
+    padding:11px 18px;
+    border:1px solid var(--line);
+    border-radius:99px;
+    background:var(--surface);
+    color:var(--text);
+    font-family:inherit;
+    font-size:.86rem;
+    font-weight:600;
+    text-decoration:none;
+    cursor:pointer;
+    transition:transform .18s ease, background .18s ease, border-color .18s ease;
+    -webkit-tap-highlight-color:transparent;
+  }
+  .btn:hover{background:var(--surface-2);transform:translateY(-1px)}
+  .btn:active{transform:translateY(0)}
+  .btn:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+
+  .btn--brand{
+    background:linear-gradient(135deg, var(--brand), var(--brand-dark));
+    border-color:transparent;
+    color:#fff;
+    box-shadow:0 8px 22px rgba(207,46,46,.28);
+  }
+  .btn--brand:hover{background:linear-gradient(135deg,#e13a3a,#b82a2a)}
+
+  .btn--wa{
+    background:rgba(37,211,102,.12);
+    border-color:rgba(37,211,102,.4);
+    color:#5df09a;
+  }
+  .btn--wa:hover{background:rgba(37,211,102,.2)}
+
+  /* ============ Action row ============ */
+  .actions{
+    display:flex;
+    flex-wrap:wrap;
+    gap:10px;
+    margin-top:18px;
+  }
+
+  /* ============ Ticker ============ */
+  .ticker{
+    display:flex;
+    align-items:stretch;
+    margin-top:16px;
+    border:1px solid var(--line);
+    border-radius:14px;
+    background:var(--surface);
+    overflow:hidden;
+  }
+  .ticker__label{
+    display:flex;
+    align-items:center;
+    padding:0 14px;
+    font-size:.68rem;
+    font-weight:700;
+    letter-spacing:.16em;
+    text-transform:uppercase;
+    color:#fff;
+    background:linear-gradient(135deg, var(--brand), var(--brand-dark));
+    white-space:nowrap;
+    flex-shrink:0;
+  }
+  .ticker__viewport{
+    position:relative;
+    flex:1;
+    overflow:hidden;
+    min-width:0;
+  }
+  .ticker__track{
+    display:flex;
+    width:max-content;
+    animation:tickerScroll 32s linear infinite;
+  }
+  .ticker__track > span{
+    padding:11px 44px 11px 18px;
+    font-size:.85rem;
+    color:#d6d6e2;
+    white-space:nowrap;
+  }
+  @keyframes tickerScroll{
+    from{transform:translateX(0)}
+    to  {transform:translateX(-50%)}
+  }
+  .ticker:hover .ticker__track{animation-play-state:paused}
+
+  /* ============ Footer ============ */
+  .site-footer{
+    margin-top:26px;
+    padding:26px 20px 40px;
+    border-top:1px solid var(--line);
+    text-align:center;
+    color:var(--muted);
+    font-size:.78rem;
+  }
+  .site-footer img{
+    width:72px;
+    margin:0 auto 12px;
+    opacity:.8;
+    border-radius:10px;
+  }
+  .site-footer p{margin:0;line-height:1.6}
+  .site-footer a{color:var(--muted);text-decoration:none;border-bottom:1px dotted rgba(255,255,255,.2)}
+  .site-footer a:hover{color:#fff}
+
+  /* ============ Responsive ============ */
+  @media (max-width:640px){
+    :root{--radius:14px}
+    .site-header{padding:12px 14px 4px;gap:10px}
+    main{padding:10px 12px 0}
+    .actions{gap:8px}
+    .btn{flex:1 1 calc(50% - 4px);padding:12px 14px;font-size:.82rem}
+    .btn--wa{flex-basis:100%}
+    .ticker__label{padding:0 10px;font-size:.62rem}
+    .ticker__track > span{font-size:.8rem;padding:10px 32px 10px 12px}
+  }
+
+  @media (prefers-reduced-motion: reduce){
+    *,*::before,*::after{
+      animation-duration:.001ms !important;
+      animation-iteration-count:1 !important;
+      transition-duration:.001ms !important;
+    }
+  }
+</style>
+</head>
+
+<body>
+
+  <!-- ================= Loading screen ================= -->
+  <div class="loader" id="loader" role="status" aria-live="polite">
+    <img class="loader__logo"
+         src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEjsJa22iI5c9DGIqWiFrzV3PC58wLh6i4rJSykKBZ7897Gn1diU_QfHepY8fLioJO8Ho6yGNhSrXPlBOy5_ySmNriX4dGGUe3HYLGdmBlMU6UWqSzEBE9S83OFrLCCUPfPXjHAZ7LqFj4ztHjIe0BTA70LmPo6rph3gTAUJHedjTemhZYli_bT-Xvl_PNlQ/s370/BrowserPreview_tmp.gif"
+         alt="Mediavision">
+    <div class="loader__word" aria-hidden="true">
+      <span style="--i:0">M</span><span style="--i:1">E</span><span style="--i:2">D</span><span style="--i:3">I</span><span style="--i:4">A</span><span style="--i:5">V</span><span style="--i:6">I</span><span style="--i:7">S</span><span style="--i:8">I</span><span style="--i:9">O</span><span style="--i:10">N</span><span style="--i:11">&nbsp;</span><span style="--i:12">T</span><span style="--i:13">V</span>
+    </div>
+    <div class="loader__bar"><i></i></div>
+    <p class="loader__hint">Tuning in to the live stream…</p>
+  </div>
+
+  <!-- ================= Header ================= -->
+  <header class="site-header">
+    <img class="brand-logo"
+         src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEjsJa22iI5c9DGIqWiFrzV3PC58wLh6i4rJSykKBZ7897Gn1diU_QfHepY8fLioJO8Ho6yGNhSrXPlBOy5_ySmNriX4dGGUe3HYLGdmBlMU6UWqSzEBE9S83OFrLCCUPfPXjHAZ7LqFj4ztHjIe0BTA70LmPo6rph3gTAUJHedjTemhZYli_bT-Xvl_PNlQ/s370/BrowserPreview_tmp.gif"
+         alt="Mediavision LIVE TV">
+    <div class="brand-text">
+      <h1>Mediavision LIVE TV</h1>
+      <p>Live News &amp; Entertainment · 24×7</p>
+    </div>
+    <span class="live-badge"><i></i>LIVE</span>
+  </header>
+
+  <!-- ================= Main ================= -->
+  <main>
+
+    <div class="player-shell">
+      <video id="player" playsinline controls autoplay preload="auto"></video>
+
+      <img class="watermark"
+           src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEjsJa22iI5c9DGIqWiFrzV3PC58wLh6i4rJSykKBZ7897Gn1diU_QfHepY8fLioJO8Ho6yGNhSrXPlBOy5_ySmNriX4dGGUe3HYLGdmBlMU6UWqSzEBE9S83OFrLCCUPfPXjHAZ7LqFj4ztHjIe0BTA70LmPo6rph3gTAUJHedjTemhZYli_bT-Xvl_PNlQ/s370/BrowserPreview_tmp.gif"
+           alt="" aria-hidden="true">
+
+      <div class="overlay" id="overlay" hidden>
+        <h2 id="overlay-title">Stream offline</h2>
+        <p id="overlay-text">The live stream could not be loaded.</p>
+        <button class="btn btn--brand" id="overlay-btn" type="button">Retry</button>
+      </div>
+    </div>
+
+    <div class="actions">
+      <a class="btn btn--brand" href="/">🔄 Reload LIVE TV</a>
+      <a class="btn btn--wa"
+         href="whatsapp://send?text=Hello,%20MediavisionLive%20TV%20is%20not%20working&phone=+917293338881">
+        💬 Not working? Contact us
+      </a>
+      <a class="btn" href="tel:+919846603034">📞 9846 60 30 34</a>
+    </div>
+
+    <div class="ticker">
+      <span class="ticker__label">Notice</span>
+      <div class="ticker__viewport">
+        <div class="ticker__track">
+          <span>» For advertising on Mediavision TV / Digital Platforms / Social Media, please contact: 9846 60 30 34, 9846 442 774</span>
+          <span aria-hidden="true">» For advertising on Mediavision TV / Digital Platforms / Social Media, please contact: 9846 60 30 34, 9846 442 774</span>
+        </div>
+      </div>
+    </div>
+
+  </main>
+
+  <!-- ================= Footer ================= -->
+  <footer class="site-footer">
+    <img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEjsJa22iI5c9DGIqWiFrzV3PC58wLh6i4rJSykKBZ7897Gn1diU_QfHepY8fLioJO8Ho6yGNhSrXPlBOy5_ySmNriX4dGGUe3HYLGdmBlMU6UWqSzEBE9S83OFrLCCUPfPXjHAZ7LqFj4ztHjIe0BTA70LmPo6rph3gTAUJHedjTemhZYli_bT-Xvl_PNlQ/s370/BrowserPreview_tmp.gif"
+         alt="Mediavision">
+    <p>© <span id="year"></span> Mediavision LIVE TV · All rights reserved.</p>
+  </footer>
+
+  <!-- ================= Scripts ================= -->
+  <script>
+  document.addEventListener('DOMContentLoaded', function () {
+    'use strict';
+
+    /* ---------- config ---------- */
+    var STREAM_URL = 'https://iptv.mediavisionlive.in/jalworldiptv/mvtv/playlist.m3u8';
+
+    var video   = document.getElementById('player');
+    var loader  = document.getElementById('loader');
+    var overlay = document.getElementById('overlay');
+    var ovTitle = document.getElementById('overlay-title');
+    var ovText  = document.getElementById('overlay-text');
+    var ovBtn   = document.getElementById('overlay-btn');
+
+    var hls = null;
+    var player = null;
+    var loaderDone = false;
+
+    document.getElementById('year').textContent = new Date().getFullYear();
+
+    /* ---------- loading screen ---------- */
+    function hideLoader() {
+      if (loaderDone) return;
+      loaderDone = true;
+      loader.classList.add('is-hidden');
+      window.setTimeout(function () { loader.style.display = 'none'; }, 700);
+    }
+    // Safety net – never trap the viewer behind the loader
+    window.setTimeout(hideLoader, 12000);
+
+    /* ---------- overlay helpers ---------- */
+    function showOverlay(title, text, btnLabel, action) {
+      ovTitle.textContent = title;
+      ovText.textContent  = text;
+
+      if (btnLabel) {
+        ovBtn.textContent = btnLabel;
+        ovBtn.hidden = false;
+        ovBtn.onclick = function () {
+          hideOverlay();
+          if (typeof action === 'function') action();
+        };
+      } else {
+        ovBtn.hidden = true;
+        ovBtn.onclick = null;
+      }
+      overlay.hidden = false;
+    }
+    function hideOverlay() { overlay.hidden = true; }
+
+    /* ---------- Plyr options ---------- */
+    var plyrOptions = {
+      controls: [
+        'play-large', 'restart', 'play', 'progress', 'current-time', 'duration',
+        'mute', 'volume', 'captions', 'settings', 'pip', 'fullscreen'
+      ],
+      settings: ['quality', 'speed'],
+      speed: { selected: 1, options: [0.5, 0.75, 1, 1.25, 1.5, 1.75, 2] },
+      seekTime: 10,
+      keyboard: { focused: true, global: true },
+      tooltips: { controls: true, seek: true },
+      hideControls: true,
+      clickToPlay: true,
+      resetOnEnd: false,
+      fullscreen: { enabled: true, fallback: true, iosNative: true },
+      storage: { enabled: true, key: 'plyr:mediavision' }
+    };
+
+    /* ---------- build the player ---------- */
+    function buildPlayer(levels) {
+      var heights = (levels || [])
+        .map(function (l) { return l.height; })
+        .filter(function (h) { return h > 0; });
+
+      heights = heights.filter(function (h, i) { return heights.indexOf(h) === i; })
+                       .sort(function (a, b) { return b - a; });
+
+      if (heights.length > 1) {
+        plyrOptions.quality = {
+          default: heights[0],
+          options: heights,
+          forced: true,
+          onChange: function (height) {
+            if (!hls) return;
+            hls.levels.forEach(function (level, index) {
+              if (level.height === height) hls.currentLevel = index;
+            });
+          }
+        };
+      }
+
+      player = new Plyr(video, plyrOptions);
+
+      player.on('playing', function () { hideLoader(); hideOverlay(); });
+      player.on('canplay', hideLoader);
+      player.on('error', function () {
+        showOverlay(
+          'Playback error',
+          'Something went wrong while playing the live stream. Please reload the page.',
+          'Reload',
+          function () { window.location.reload(); }
+        );
+      });
+
+      attemptAutoplay();
+    }
+
+    function attemptAutoplay() {
+      var p = player.play();
+      if (p && typeof p.catch === 'function') {
+        p.catch(function () {
+          hideLoader();
+          showOverlay(
+            'Ready to watch',
+            'Your browser blocked autoplay with sound. Tap play to start Mediavision LIVE TV.',
+            'Play',
+            function () { player.play(); }
+          );
+        });
+      }
+    }
+
+    /* ---------- stream bootstrap ---------- */
+    function initStream() {
+      if (window.Hls && window.Hls.isSupported()) {
+
+        hls = new Hls({
+          enableWorker: true,
+          lowLatencyMode: true,
+          backBufferLength: 30,
+          maxBufferLength: 30,
+          maxMaxBufferLength: 100,
+          liveSyncDurationCount: 3,
+          manifestLoadingTimeOut: 15000,
+          manifestLoadingMaxRetry: 4,
+          levelLoadingMaxRetry: 6,
+          fragLoadingMaxRetry: 6
+        });
+
+        hls.loadSource(STREAM_URL);
+        hls.attachMedia(video);
+
+        hls.on(Hls.Events.MANIFEST_PARSED, function (event, data) {
+          buildPlayer(data.levels);
+        });
+
+        hls.on(Hls.Events.ERROR, function (event, data) {
+          if (!data.fatal) return;
+
+          switch (data.type) {
+            case Hls.ErrorTypes.NETWORK_ERROR:
+              hls.startLoad();          // try to recover the network
+              break;
+            case Hls.ErrorTypes.MEDIA_ERROR:
+              hls.recoverMediaError();  // try to recover the decoder
+              break;
+            default:
+              hideLoader();
+              showOverlay(
+                'Stream offline',
+                'The live stream could not be loaded right now. Please try again in a moment.',
+                'Retry',
+                function () { window.location.reload(); }
+              );
+          }
+        });
+
+      } else if (video.canPlayType('application/vnd.apple.mpegurl')) {
+        // Safari / iOS – native HLS
+        video.src = STREAM_URL;
+        buildPlayer([]);
+        video.addEventListener('loadedmetadata', hideLoader, { once: true });
+
+      } else {
+        hideLoader();
+        showOverlay(
+          'Not supported',
+          'Your browser cannot play HLS video. Please try Chrome, Edge, Safari or Firefox.',
+          null
+        );
+      }
+    }
+
+    initStream();
+  });
+  </script>
+
+  <!-- Plyr / Hls are loaded with `defer`; wait for them before booting -->
+  <script>
+    (function () {
+      function ready(fn) {
+        if (document.readyState === 'loading') {
+          document.addEventListener('DOMContentLoaded', fn);
+        } else {
+          fn();
+        }
+      }
+      ready(function () {
+        if (!window.Plyr || !window.Hls) {
+          window.addEventListener('load', function () {
+            document.dispatchEvent(new Event('DOMContentLoaded'));
+          });
+        }
+      });
+    })();
+  </script>
+
+</body>
+</html>
